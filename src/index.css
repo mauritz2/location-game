@@ -7,7 +7,80 @@ body {
   -moz-osx-font-smoothing: grayscale;
 }
 
-code {
-  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
-    monospace;
+:root {
+  --grey: #4C5454;
+  --orange: #FF715B;
+  --white: #FFFFFF;
+  --turquoise: #1EA896;
+  --brown: #523F38;
+}
+
+
+/* General */
+.btn {
+  font: inherit;
+  border: none;
+  padding: 0.5em;
+  border-radius: 5px;
+  background-color: var(--white);
+  cursor: pointer;
+}
+
+/* Main game */
+
+#overall-container {
+  max-width: min(80%, 75em);
+  margin-left: 5em;
+}
+
+#gameplay-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+}
+
+/* Location CSS */
+
+#location-container {
+  display: subgrid;
+  grid-template-columns: 1fr 1fr;
+}
+
+.location {
+  text-align: center;
+  position: relative;
+}
+
+.location img {
+  max-width: 15em;
+  max-height: 15em;
+}
+
+.location p {
+  position: absolute;
+  text-transform: capitalize;
+  background-color: var(--white);
+  opacity: 80%;
+  align-content: center;
+  top: 5%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.location-btn{
+  position:absolute;
+  top: 80%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 90%;
+  background-color: var(--orange);
+}
+
+.announce-btn{
+  position:absolute;
+  top: 60%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  opacity: 90%;
+  background-color: var(--white);
 }
