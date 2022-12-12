@@ -11,8 +11,10 @@ function App() {
   const [showChooseLoc, setChooseLoc] = useState<boolean>(true);
   const [logMessages, setLogMessages] = useState<Array<String>>([])
 
-  const socket = io();
   const cookies = new Cookies();
+  const socket = io("localhost:5000/", {
+    transports: ["websocket"],
+  });
 
   socket.on("UPDATE_GAME_STATE", (game_state) => {
     console.log("I am updating the game state");
@@ -25,7 +27,7 @@ function App() {
 
 
   function startGame() {
-    fetch("/api/start-game")
+    fetch("api/start-game")
     .then((response => response.json()))
     .then((data) => {
       //setGameState(data);
@@ -46,7 +48,6 @@ function App() {
     }
 
   function setButtonVisibility(curPhase: string){
-    console.log("Current phase:" + curPhase);
     switch(curPhase){
       case "choosing location":
         setChooseLoc(true);
@@ -57,10 +58,16 @@ function App() {
     }
   }
 
+  socket.on("connect_error", (err) => {
+    console.log(`connect_error due to ${err.message}`);
+  });
+
   useEffect(() =>  {
     // Is there a way to call a function once? It keeps calling this func forever.
-    startGame();
+    // TODO - bring this back
+    // startGame();
     setButtonVisibility(currentPhase);
+  
     
     // TODO - bring back. Cookie code makes page take a very long time to load
     /*   

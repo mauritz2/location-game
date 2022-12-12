@@ -1,10 +1,13 @@
 from flask import Flask, jsonify
 from create_game import create_game
 from flask_socketio import SocketIO
+from flask_cors import CORS
 
 app = Flask(__name__)
 socketio = SocketIO(app, logger=True)
+CORS(app,resources={r"/*":{"origins":"*"}})
 socketio.init_app(app, cors_allowed_origins="*")
+#socketio.init_app(app, cors_allowed_origins="*")
 
 global game_manager
 
@@ -39,10 +42,9 @@ def start_game():
 def announce_location(data):
     global game_manager
 
-    if not game_manager:
-        # TODO - remove this later - seems like I announce location before start game can run sometimes
-        players = {"Player 1":"1a1a1a", "Player 2":"2b2b2b"}
-        game_manager = create_game(players)
+    # TODO - remove this later - seems like I announce location before start game can run sometimes
+    players = {"Player 1":"1a1a1a", "Player 2":"2b2b2b"}
+    game_manager = create_game(players)
 
     msg = f"{data['player_id']} is announcing that they will visit the {data['location']} this turn."
     
