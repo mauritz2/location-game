@@ -25,7 +25,8 @@ class GameManager():
         game_state = {
             "players": self.players,
             "current_player_name": self.current_player_name,
-            "game_phase": self.game_phase.value
+            "game_phase": self.game_phase.value,
+            "log_messages": self.game_log.messages
         }
 
         return game_state
