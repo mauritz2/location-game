@@ -12,6 +12,7 @@ function App() {
   const [logMessages, setLogMessages] = useState<Array<String>>([])
 
   const cookies = new Cookies();
+  
   const socket = io("localhost:5000/", {
     transports: ["websocket"],
   });
@@ -21,19 +22,22 @@ function App() {
     console.log(game_state);
     setCurrentPlayer(game_state["current_player_name"]);
     setCurrentPhase(game_state["game_phase"]);
-    setCurrentPhase(game_state["game_phase"]);
     setLogMessages(game_state["log_messages"]);
   })
 
+  const existing_player_id = cookies.get("player_id");
+  if(!existing_player_id){
+    // TODO - replace with uuid. For some reason importing "uuid" doesn't work
+    // TODO - check if cookie already exists and also set new UID if not
+    const player_id = Math.floor(Math.random() * 1000000000);
+    cookies.set("player_id", player_id);
+    console.log(cookies.get("player_id"));
+    }
 
   function startGame() {
-    fetch("api/start-game")
-    .then((response => response.json()))
-    .then((data) => {
-      //setGameState(data);
-      setCurrentPlayer(data["current_player_name"])
-      setCurrentPhase(data["game_phase"])
-    })
+    // TODO - re-make to send player_id for all players, then start game
+    // Start game should take all player_ids sent and add them to a new game
+    socket.emit("START_GAME_CLICK")
   }
 
   function announceLocation(player_id: string, location: string){
@@ -42,9 +46,8 @@ function App() {
     const data = {
         "player_id": player_id,
         "location": location
-    }
+      }
     socket.emit("ANNOUNCE_LOCATION", data);
-
     }
 
   function setButtonVisibility(curPhase: string){
@@ -58,28 +61,9 @@ function App() {
     }
   }
 
-  socket.on("connect_error", (err) => {
-    console.log(`connect_error due to ${err.message}`);
-  });
-
   useEffect(() =>  {
-    // Is there a way to call a function once? It keeps calling this func forever.
-    // TODO - bring this back
-    // startGame();
+    startGame(); // To be tied to a start game button eventually
     setButtonVisibility(currentPhase);
-  
-    
-    // TODO - bring back. Cookie code makes page take a very long time to load
-    /*   
-    const existing_player_id = cookies.get("player_id");
-    if(existing_player_id.length === 0){
-      // TODO - replace with uuid. For some reason importing "uuid" doesn't work
-      // TODO - check if cookie already exists and also set new UID if not
-      const player_id = Math.floor(Math.random() * 1000000000);
-      cookies.set("player_id", player_id);
-      console.log(cookies.get("player_id"));
-      }
-      */
   }, []);
   
   return (

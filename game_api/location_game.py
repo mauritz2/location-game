@@ -1,6 +1,6 @@
 from flask import Flask, jsonify
 from create_game import create_game
-from flask_socketio import SocketIO
+from flask_socketio import SocketIO, emit 
 from flask_cors import CORS
 
 app = Flask(__name__)
@@ -11,17 +11,8 @@ socketio.init_app(app, cors_allowed_origins="*")
 
 global game_manager
 
-def update_game_state():
-    game_state = jsonify(game_manager.get_game_state())
-    print(game_state)
-    print(type(game_state))
-    socketio.emit("UPDATE_GAME_STATE", game_state)
-
-@app.route("/api/start-game", methods=["GET"])
+@socketio.on("START_GAME_CLICK")
 def start_game():
-    """
-    Creates the GameManager and returns the game state to the client
-    """
     global game_manager
     ## Start game flow
     # User selects a name and clicks "Join Game"
@@ -32,33 +23,24 @@ def start_game():
     
     # Placeholder
     players = {"Player 1":"1a1a1a", "Player 2":"2b2b2b"}
-
     game_manager = create_game(players)
-    game_state = game_manager.get_game_state()
 
-    return game_state
+    game_state = game_manager.get_game_state()
+    emit("UPDATE_GAME_STATE", game_state)
+
 
 @socketio.on("ANNOUNCE_LOCATION")
 def announce_location(data):
     global game_manager
 
-    # TODO - remove this later - seems like I announce location before start game can run sometimes
-    players = {"Player 1":"1a1a1a", "Player 2":"2b2b2b"}
-    game_manager = create_game(players)
-
-    msg = f"{data['player_id']} is announcing that they will visit the {data['location']} this turn."
-    
+    msg = f"{data['player_id']} is announcing that they will visit the {data['location']} this turn."    
     game_manager.game_log.messages.append(msg)
 
     game_state = game_manager.get_game_state()
-    print(game_state)
-    print(type(game_state))
-    socketio.emit("UPDATE_GAME_STATE", game_state)
+    emit("UPDATE_GAME_STATE", game_state)
     
 
-
 if __name__ == "__main__":
-    #app.run(host="0.0.0.0", debug=True)
     socketio.run(app, debug=True)
 
 
