@@ -22,8 +22,15 @@ body {
   border: none;
   padding: 0.5em;
   border-radius: 5px;
-  background-color: var(--white);
   cursor: pointer;
+}
+
+.bg-turquoise {
+  background-color: var(--turquoise);
+}
+
+.bg-orange {
+  background-color: var(--orange);
 }
 
 /* Main game */
@@ -35,8 +42,30 @@ body {
 
 #gameplay-container {
   display: grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr;
 }
+
+/* Chat */
+
+.flash-message {
+  background-color: var(--orange); 
+  -webkit-transition:background-color 2s linear; 
+}
+
+
+#log {
+  border: #4C5454;
+  border-width: 1px;
+  border-style: solid;
+  padding: 2em;
+}
+
+#log li {
+  padding: 0.5em;
+  border-radius: 5px;
+  list-style: none;
+}
+
 
 /* Location CSS */
 
@@ -69,18 +98,28 @@ body {
 
 .location-btn{
   position:absolute;
-  top: 80%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  opacity: 90%;
-  background-color: var(--orange);
-}
-
-.announce-btn{
-  position:absolute;
-  top: 60%;
+  top: 85%;
   left: 50%;
   transform: translate(-50%, -50%);
   opacity: 90%;
   background-color: var(--white);
+}
+
+/* Location context */
+
+#location-context-header {
+  text-transform: capitalize;
+}
+
+form div {
+  margin-top: 1.5em;
+  margin-bottom: 1em;
+}
+
+/* Resources */
+
+#resource-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  text-align: center;
 }

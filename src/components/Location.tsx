@@ -6,11 +6,11 @@ import Button from './Button';
 
 // import io from "socket.io-client";
 
-function Location({type, chooseLoc, announceLocation}: LocationProps) {
+function Location({name, onSelect}: LocationProps) {
 
-    // Is it OK to have loose variables like these? Or should they be part of useEffect()?
+    // Is it OK to have "loose" variables like these? Or should they be part of useEffect()?
     let image = "";
-    switch(type){
+    switch(name){
         case "graveyard":
             image = graveyard;
             break;
@@ -19,22 +19,14 @@ function Location({type, chooseLoc, announceLocation}: LocationProps) {
             break;        
     }
     
-
     return(
         <div className="location">
-            <p>{type}</p>
+            <p>{name}</p>
             <img src={image}></img>
-            {chooseLoc ? 
-            <>
             <Button
-                text={"Go to location"} 
+                text={"See details"} 
                 btnClass={"btn location-btn"}
-                onClick={function(){}}/> 
-            <Button
-                text={"Announce intent"} 
-                btnClass={"btn announce-btn"}
-                onClick={() => {announceLocation("dummy-player-id", type)}}/> 
-            </> : ""}
+                onClick={() => {onSelect(name)}}/> 
         </div>
     );
 }
@@ -42,8 +34,7 @@ function Location({type, chooseLoc, announceLocation}: LocationProps) {
 export default Location;
 
 type LocationProps = {
-    type: string;
-    chooseLoc: boolean;
-    announceLocation: (player_id: string, location: string) => void;
+    name: string;
+    onSelect: (name: string) => void;
 }
 

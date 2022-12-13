@@ -3,13 +3,16 @@ import Location from "./components/Location";
 import GameLog from "./components/GameLog";
 import io from "socket.io-client";
 import Cookies from "universal-cookie";
+import LocationDetails from './components/LocationDetails';
+import Resources from "./components/Resources"
 
 function App() {
   //const [gameState, setGameState] = useState<GameState>({"players":[""], "current_player_name":"","game_phase":""}) 
   const [currentPlayer, setCurrentPlayer] = useState<string>("");
   const [currentPhase, setCurrentPhase] = useState<string>("");
   const [showChooseLoc, setChooseLoc] = useState<boolean>(true);
-  const [logMessages, setLogMessages] = useState<Array<String>>([])
+  const [logMessages, setLogMessages] = useState<Array<string>>([])
+  const [locationFocus, setLocationFocus] = useState<string>("market")
 
   const cookies = new Cookies();
   
@@ -40,6 +43,14 @@ function App() {
     socket.emit("START_GAME_CLICK")
   }
 
+  function onLocationSelect(locationName: string) {
+    setLocationFocus(locationName);
+  }
+
+  function onActionSubmit(data: ActionObject){
+    socket.emit("TAKE_ACTION", data);
+  }
+
   function announceLocation(player_id: string, location: string){
     // TODO - replace dummy player ID
     console.log("I'm announcing a location");
@@ -51,6 +62,7 @@ function App() {
     }
 
   function setButtonVisibility(curPhase: string){
+    // TODO - update to new turn flow
     switch(curPhase){
       case "choosing location":
         setChooseLoc(true);
@@ -68,23 +80,33 @@ function App() {
   
   return (
     <div id="overall-container">
+        <Resources />
         <h3>{currentPlayer} is currently {currentPhase}</h3>
         <div id="gameplay-container">
           <GameLog 
             logMessages={logMessages}/>
           <div id="location-container">
             <Location
-              type={"graveyard"}
-              chooseLoc={showChooseLoc}
-              announceLocation={announceLocation}/>
+              name={"graveyard"}
+              onSelect={onLocationSelect}/>
             <Location
-              type={"market"}
-              chooseLoc={showChooseLoc}
-              announceLocation={announceLocation}/>
+              name={"market"}
+              onSelect={onLocationSelect}/>
+          </div>
+          <div id="location-context-container">
+            <LocationDetails
+              location={locationFocus}
+              announceLocation={announceLocation}
+              onSubmit={onActionSubmit}/>
           </div>
         </div>
     </div>
   );
+}
+
+type ActionObject = {
+  action: String
+  data: String | null
 }
 
 export default App;

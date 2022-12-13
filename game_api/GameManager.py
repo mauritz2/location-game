@@ -1,6 +1,7 @@
 from random import choice
 from enum import Enum, auto
 from dataclasses import dataclass
+from player import Player
 
 class GameManager():
     """
@@ -9,22 +10,31 @@ class GameManager():
     This is the only code that should be exposed in the Game API routes.
     """
 
-    def __init__(self, players: dict[str:str]):
-        self.players = players
+    def __init__(self, players: list[Player]):
+        self.players = self.create_player_dict(players) # TODO change to player class instances instead
         # With a random choice here React gets stuck in an infinite loop :-) 
         #self.current_player_name = choice(list(self.players.keys()))
-        self.current_player_name = (list(self.players.keys()))[0] 
-        self.current_player_id = self.players[self.current_player_name] 
+        self.current_player = self.players[choice(list(self.players.keys()))]
+        self.players_waiting_for_turn = list(self.players.keys())
         self.game_phase = GamePhases.ChooseLocation
         self.game_log = GameLog(messages=[])
 
-    def get_game_state(self):
+    @staticmethod
+    def create_player_dict(players: list[Player]) -> dict[str, Player]:
+        player_dict = {player.player_id:player for player in players}
+        return player_dict
+
+    def end_player_turn(self) -> None:
+        self.players_waiting_for_turn.remove(self.current_player.player_id)
+        self.current_player = self.players[self.players_waiting_for_turn[0]]
+
+    def get_game_state(self) -> dict:
         """
         Return a serializable game state object for the front-end to render
         """
         game_state = {
-            "players": self.players,
-            "current_player_name": self.current_player_name,
+            "players": list(self.players.keys()),
+            "current_player_name": self.current_player.player_name,
             "game_phase": self.game_phase.value,
             "log_messages": self.game_log.messages
         }

@@ -6,8 +6,17 @@ function GameLog({logMessages}: GameLogProps){
 
     const messages: Array<JSX.Element> = [];
 
+    let msg_id = 0;
+
     logMessages.forEach((msg => {
-        messages.push(<li>{msg}</li>)
+        msg_id = msg_id + 1;
+
+        if(msg_id === logMessages.length){
+            messages.push(<li className="flash-message" key={msg_id}>{msg}</li>)
+        }
+        else {
+            messages.push(<li key={msg_id}>{msg}</li>)
+        }
     })) 
 
     return(
