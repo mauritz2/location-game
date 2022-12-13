@@ -8,28 +8,33 @@ import Resources from "./components/Resources"
 
 function App() {
   //const [gameState, setGameState] = useState<GameState>({"players":[""], "current_player_name":"","game_phase":""}) 
-  const [currentPlayer, setCurrentPlayer] = useState<string>("");
+  const [currentPlayer, setCurrentPlayer] = useState<CurrentPlayer>({"player_name":"", "player_id":""});
   const [currentPhase, setCurrentPhase] = useState<string>("");
-  const [showChooseLoc, setChooseLoc] = useState<boolean>(true);
+  const [showSubmit, setShowSubmit] = useState<boolean>(false);
   const [logMessages, setLogMessages] = useState<Array<string>>([])
   const [locationFocus, setLocationFocus] = useState<string>("market")
+  // Would it be best practice to define a object like this?
   const [resources, setResources] = useState<ResourceObjectAmts>({'coins': 0, 'armor': 0, 'herbs': 0, 'scrolls': 0, 'corpses': 0})
 
   const socket = io("localhost:5000/", {
     transports: ["websocket"],
   });
 
-  /* COOKIE SETTING START */ 
+  /* COOKIE SETTING AND GETTING */ 
   const cookies = new Cookies();
-  const existing_player_id = cookies.get("player_id");
-  if(!existing_player_id){
+  
+  function setUUIDCookie(){
     // TODO - replace with uuid. For some reason importing "uuid" doesn't work
     // TODO - check if cookie already exists and also set new UID if not
     const player_id = Math.floor(Math.random() * 1000000000);
     cookies.set("player_id", player_id);
-    }
-  /* COOKIE SETTING END  */ 
+  }
 
+  function getUUIDFromCookie(){
+    const player_id = cookies.get("player_id");
+    return player_id; 
+  }
+  /* COOKIE SETTING END  */ 
 
   /* SOCKET LISTENERS */
   socket.on("UPDATE_RESOURCES", (resources) => {
@@ -37,13 +42,25 @@ function App() {
   });
 
   socket.on("UPDATE_GAME_STATE", (game_state) => {
-    setCurrentPlayer(game_state["current_player_name"]);
+    console.log(game_state);
+
+    const current_player = {
+      "player_name": game_state["current_player_name"],
+      "player_id": game_state["current_player_id"]
+    }
+
+    if(current_player.player_id == getUUIDFromCookie()){
+      setShowSubmit(true)
+    }
+    else{
+      setShowSubmit(false)
+    }
+
+    setCurrentPlayer(current_player);
     setCurrentPhase(game_state["game_phase"]);
     setLogMessages(game_state["log_messages"]);
   });
   /* END OF SOCKET LISTENERS */
-
-
 
   function startGame() {
     // TODO - re-make to send player_id for all players, then start game
@@ -56,40 +73,37 @@ function App() {
   }
 
   function onActionSubmit(data: ActionObject){
+    data["player_id"] = getUUIDFromCookie();
+    console.log(data);
     socket.emit("TAKE_ACTION", data);
   }
 
-  function announceLocation(player_id: string, location: string){
+  function announceLocation(location: string){
     // TODO - replace dummy player ID
     const data = {
-        "player_id": player_id,
+        "player_id": getUUIDFromCookie(),
         "location": location
       }
     socket.emit("ANNOUNCE_LOCATION", data);
     }
 
-  function setButtonVisibility(curPhase: string){
-    // TODO - update to new turn flow
-    switch(curPhase){
-      case "choosing location":
-        setChooseLoc(true);
-        break;
-      default:
-        setChooseLoc(true);
-        break;
-    }
-  }
 
   useEffect(() =>  {
     startGame(); // To be tied to a start game button eventually
-    setButtonVisibility(currentPhase);
+
+    // Set UUID coookie if it doesn't exist to identify player
+    const existing_player_id = cookies.get("player_id");
+    if(!existing_player_id){
+        setUUIDCookie();
+      }
+  
   }, []);
   
   return (
     <div id="overall-container">
         <Resources
           resource_amts={resources}/>
-        <h3>{currentPlayer} is currently {currentPhase}</h3>
+        <h3>{currentPlayer.player_name} is currently choosing what location to visit this night</h3>
         <div id="gameplay-container">
           <GameLog 
             logMessages={logMessages}/>
@@ -105,7 +119,8 @@ function App() {
             <LocationDetails
               location={locationFocus}
               announceLocation={announceLocation}
-              onSubmit={onActionSubmit}/>
+              onSubmit={onActionSubmit}
+              showSubmit={showSubmit}/>
           </div>
         </div>
     </div>
@@ -115,6 +130,7 @@ function App() {
 type ActionObject = {
   action: String
   data: String | null
+  player_id?: String
 }
 
 type ResourceObjectAmts = {
@@ -125,6 +141,10 @@ type ResourceObjectAmts = {
   corpses: number;
 }
 
+type CurrentPlayer = {
+  player_name: string;
+  player_id: string;
+}
 
 export default App;
 

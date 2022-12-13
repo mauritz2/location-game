@@ -11,26 +11,18 @@ global game_manager
 @socketio.on("START_GAME_CLICK")
 def start_game():
     global game_manager
-    ## Start game flow
-    # User selects a name and clicks "Join Game"
-    # 1. React sets a cookie through universal-cookie with a player_id
-    # 2. The ID is passed to the backend (where? - prob just in a location_game.py var?)
-    # On start game
-    # Call create game with the names and IDs  
-    
-    # Placeholder
-    players = {"1111111":"Player 1", "222222":"Player 2"}
+    # Placeholder IDs and names for simplicity during dev
+    players = {"169910709":"Player 1", "462210324":"Player 2"}
     game_manager = create_game(players)
-
     game_state = game_manager.get_game_state()
-    emit("UPDATE_GAME_STATE", game_state)
+    emit("UPDATE_GAME_STATE", game_state, broadcast=True)
 
 @socketio.on("TAKE_ACTION")
 def take_action(data):
     global game_manager
     action = data["action"]
     action_data = data["data"]
-    player_id = "1111111" # TODO - replace placeholder
+    player_id = data["player_id"]
 
     player = game_manager.players[player_id]
     # insert check here that it's actually this players turn
@@ -40,20 +32,29 @@ def take_action(data):
         case "earn":
             player.add_remove_coins(2)
 
+
     resources = player.get_resources()
-    print("\n\n")
-    print(resources)
     emit("UPDATE_RESOURCES", resources, to=request.sid)
+
+    game_manager.end_player_turn()
+
+    game_state = game_manager.get_game_state()
+    emit("UPDATE_GAME_STATE", game_state, broadcast=True)
+    
 
 @socketio.on("ANNOUNCE_LOCATION")
 def announce_location(data):
     global game_manager
 
-    msg = f"{data['player_id']} is announcing that they will visit the {data['location']} this turn."    
+    player_id = data["player_id"]
+    player_name = game_manager.players[player_id].player_name
+    location = data["location"]
+
+    msg = f"{player_name} is announcing that they will visit the {location} this night."    
     game_manager.game_log.messages.append(msg)
 
     game_state = game_manager.get_game_state()
-    emit("UPDATE_GAME_STATE", game_state)
+    emit("UPDATE_GAME_STATE", game_state, broadcast=True)
     
 
 if __name__ == "__main__":

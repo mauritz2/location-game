@@ -33,6 +33,11 @@ body {
   background-color: var(--orange);
 }
 
+.btn:disabled {
+  background-color: var(--grey);
+  cursor: default;
+}
+
 /* Main game */
 
 #overall-container {

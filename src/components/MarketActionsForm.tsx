@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-function MarketActionsForm({onSubmit}:MarketActionsFormProps){
+function MarketActionsForm({onSubmit, showSubmit}:MarketActionsFormProps){
 
     const [selectedAction, setSelectedAction] = useState<string>("");
 
@@ -27,7 +27,7 @@ function MarketActionsForm({onSubmit}:MarketActionsFormProps){
             </div>
             {selectedAction == "trade" ? <p><i>TBD trade input controls</i></p>: ""}
 
-            <input type="submit" className="btn bg-orange" value="Confirm action"></input>
+            <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm action"/>
         </form>
         <p>Location bonus (if 2+ visits): <i>Earn 2 additional coins</i></p>
         </>
@@ -36,6 +36,7 @@ function MarketActionsForm({onSubmit}:MarketActionsFormProps){
 
 type MarketActionsFormProps = {
     onSubmit: (data: ActionObject) => void;
+    showSubmit: boolean;
 }
 
 type ActionObject = {

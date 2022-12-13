@@ -1,9 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import Button from "./Button";
 import MarketActionsForm from "./MarketActionsForm";
 
-function LocationDetails({location, announceLocation, onSubmit}: LocationDetailsProps) {
+function LocationDetails({location, announceLocation, onSubmit, showSubmit}: LocationDetailsProps) {
     
+    const [displaySubmit, setDisplaySubmit] = useState<boolean>(false);
     const btn_msg = "Announce that you will visit the " + location
 
     return(
@@ -12,17 +13,21 @@ function LocationDetails({location, announceLocation, onSubmit}: LocationDetails
             <Button
                 text={btn_msg} 
                 btnClass={"btn bg-turquoise"}
-                onClick={() => {announceLocation("dummy-player-id", location)}}/> 
+                onClick={() => {announceLocation(location)}}/> 
             <h4>Actions</h4>
-            {location == "market" ? <MarketActionsForm onSubmit={onSubmit}/> : ""}
+            {location == "market" ?
+                <MarketActionsForm
+                    onSubmit={onSubmit}
+                    showSubmit={showSubmit}/> : ""}
         </>
     );
 }
 
 type LocationDetailsProps = {
     location: string;
-    announceLocation: (player_id: string, location: string) => void;
+    announceLocation: (location: string) => void;
     onSubmit: (data: ActionObject) => void;
+    showSubmit: boolean;
 }
 
 type ActionObject = {
