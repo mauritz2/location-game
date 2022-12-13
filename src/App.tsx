@@ -13,29 +13,37 @@ function App() {
   const [showChooseLoc, setChooseLoc] = useState<boolean>(true);
   const [logMessages, setLogMessages] = useState<Array<string>>([])
   const [locationFocus, setLocationFocus] = useState<string>("market")
+  const [resources, setResources] = useState<ResourceObjectAmts>({'coins': 0, 'armor': 0, 'herbs': 0, 'scrolls': 0, 'corpses': 0})
 
-  const cookies = new Cookies();
-  
   const socket = io("localhost:5000/", {
     transports: ["websocket"],
   });
 
-  socket.on("UPDATE_GAME_STATE", (game_state) => {
-    console.log("I am updating the game state");
-    console.log(game_state);
-    setCurrentPlayer(game_state["current_player_name"]);
-    setCurrentPhase(game_state["game_phase"]);
-    setLogMessages(game_state["log_messages"]);
-  })
-
+  /* COOKIE SETTING START */ 
+  const cookies = new Cookies();
   const existing_player_id = cookies.get("player_id");
   if(!existing_player_id){
     // TODO - replace with uuid. For some reason importing "uuid" doesn't work
     // TODO - check if cookie already exists and also set new UID if not
     const player_id = Math.floor(Math.random() * 1000000000);
     cookies.set("player_id", player_id);
-    console.log(cookies.get("player_id"));
     }
+  /* COOKIE SETTING END  */ 
+
+
+  /* SOCKET LISTENERS */
+  socket.on("UPDATE_RESOURCES", (resources) => {
+    setResources(resources);
+  });
+
+  socket.on("UPDATE_GAME_STATE", (game_state) => {
+    setCurrentPlayer(game_state["current_player_name"]);
+    setCurrentPhase(game_state["game_phase"]);
+    setLogMessages(game_state["log_messages"]);
+  });
+  /* END OF SOCKET LISTENERS */
+
+
 
   function startGame() {
     // TODO - re-make to send player_id for all players, then start game
@@ -53,7 +61,6 @@ function App() {
 
   function announceLocation(player_id: string, location: string){
     // TODO - replace dummy player ID
-    console.log("I'm announcing a location");
     const data = {
         "player_id": player_id,
         "location": location
@@ -80,7 +87,8 @@ function App() {
   
   return (
     <div id="overall-container">
-        <Resources />
+        <Resources
+          resource_amts={resources}/>
         <h3>{currentPlayer} is currently {currentPhase}</h3>
         <div id="gameplay-container">
           <GameLog 
@@ -108,6 +116,15 @@ type ActionObject = {
   action: String
   data: String | null
 }
+
+type ResourceObjectAmts = {
+  coins: number;
+  armor: number;
+  herbs: number;
+  scrolls: number;
+  corpses: number;
+}
+
 
 export default App;
 

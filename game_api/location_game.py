@@ -1,11 +1,9 @@
-from flask import Flask, jsonify
+from flask import Flask, request
 from create_game import create_game
 from flask_socketio import SocketIO, emit 
-from flask_cors import CORS
 
 app = Flask(__name__)
 socketio = SocketIO(app, logger=True)
-#CORS(app,resources={r"/*":{"origins":"*"}})
 socketio.init_app(app, cors_allowed_origins="*")
 
 global game_manager
@@ -41,6 +39,11 @@ def take_action(data):
         # TODO - resolve actions at round end as opposed to immediately
         case "earn":
             player.add_remove_coins(2)
+
+    resources = player.get_resources()
+    print("\n\n")
+    print(resources)
+    emit("UPDATE_RESOURCES", resources, to=request.sid)
 
 @socketio.on("ANNOUNCE_LOCATION")
 def announce_location(data):
