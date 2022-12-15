@@ -31,8 +31,10 @@ type LocationDetailsProps = {
 }
 
 type ActionObject = {
-    action: String
-    data: String | null
+    action: string;
+    location: string;
+    action_details: string | null;
+    
 }
 
 export default LocationDetails;

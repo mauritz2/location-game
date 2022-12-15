@@ -7,7 +7,8 @@ function MarketActionsForm({onSubmit, showSubmit}:MarketActionsFormProps){
     function handleSubmit(event: React.FormEvent<HTMLFormElement>){
         const data = {
             "action": selectedAction,
-            "data": null 
+            "location": "market",
+            "action_details": null 
         }
         
         onSubmit(data);
@@ -40,8 +41,9 @@ type MarketActionsFormProps = {
 }
 
 type ActionObject = {
-    action: String
-    data: String | null
+    action: string;
+    location: string;
+    action_details: string | null;
 }
 
 export default MarketActionsForm;

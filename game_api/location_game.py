@@ -2,26 +2,38 @@ from flask import Flask, request
 from create_game import create_game
 from flask_socketio import SocketIO, emit 
 
+global game_manager
+
 app = Flask(__name__)
 socketio = SocketIO(app, logger=True)
 socketio.init_app(app, cors_allowed_origins="*")
-
-global game_manager
 
 @socketio.on("START_GAME_CLICK")
 def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
-    players = {"169910709":"Player 1", "462210324":"Player 2"}
+    players = {"424678775":"Player 1", "63408551":"Player 2"}
+    #players = {"424678775":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
 
-@socketio.on("TAKE_ACTION")
+@socketio.on("CHECK_LOCATION")
+def check_location(player_id: str):
+    global game_manager
+
+    location = game_manager.get_chosen_location_by_id(player_id)
+    msg = game_manager.get_message_for_location(location)
+
+    emit("LOCATION_MSG", msg, to=request.sid)
+
+
+@socketio.on("CHOOSE_DAY_ACTION")
 def take_action(data):
     global game_manager
     action = data["action"]
-    action_data = data["data"]
+    location = data["location"]
+    #action_data = data["data"]
     player_id = data["player_id"]
 
     player = game_manager.players[player_id]
@@ -32,6 +44,10 @@ def take_action(data):
         case "earn":
             player.add_remove_coins(2)
 
+    game_manager.add_chosen_location(player_id, location)
+
+    if game_manager.is_round_over():
+        emit("DAY_OVER", broadcast=True)
 
     resources = player.get_resources()
     emit("UPDATE_RESOURCES", resources, to=request.sid)
@@ -51,6 +67,7 @@ def announce_location(data):
     location = data["location"]
 
     msg = f"{player_name} is announcing that they will visit the {location} this night."    
+    # TODO - the game log can't be universal - it needs to be managed at the player level?
     game_manager.game_log.messages.append(msg)
 
     game_state = game_manager.get_game_state()

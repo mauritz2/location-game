@@ -60,6 +60,16 @@ function App() {
     setCurrentPhase(game_state["game_phase"]);
     setLogMessages(game_state["log_messages"]);
   });
+
+  socket.on("DAY_END", () => {
+    const player_id = getUUIDFromCookie();
+    socket.emit("CHECK_LOCATION", player_id);
+  });
+
+  socket.on("LOCATION_MSG", (msg) => {
+    console.log(msg);
+  })
+
   /* END OF SOCKET LISTENERS */
 
   function startGame() {
@@ -75,7 +85,7 @@ function App() {
   function onActionSubmit(data: ActionObject){
     data["player_id"] = getUUIDFromCookie();
     console.log(data);
-    socket.emit("TAKE_ACTION", data);
+    socket.emit("CHOOSE_DAY_ACTION", data);
   }
 
   function announceLocation(location: string){
@@ -128,9 +138,10 @@ function App() {
 }
 
 type ActionObject = {
-  action: String
-  data: String | null
-  player_id?: String
+  action: string
+  location: string
+  action_details: string | null
+  player_id?: string
 }
 
 type ResourceObjectAmts = {
