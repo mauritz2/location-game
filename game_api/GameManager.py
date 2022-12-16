@@ -41,10 +41,20 @@ class GameManager():
         """
         return True if len(self.players_waiting_for_turn) == 0 else False
 
+    def is_new_round(self) -> None:
+        """
+        Checks if any players have taken their turn - if not it's considered a new round.
+        """
+        return True if len(self.players_waiting_for_turn) == len(list(self.players.keys())) else False
+
 
     def end_player_turn(self) -> None:
         self.players_waiting_for_turn.remove(self.current_player.player_id)        
-        self.current_player = self.players[self.players_waiting_for_turn[0]]
+        if len(self.players_waiting_for_turn) == 0:
+            self.end_round()
+        else:
+            # If the round isn't over - select the next player
+            self.current_player = self.players[self.players_waiting_for_turn[0]]
 
 
     def end_round(self) -> None:
@@ -57,7 +67,7 @@ class GameManager():
             if player_id in player_ids:
                 return location
 
-    def get_location_message_for_locations(self, location: str) -> str:
+    def get_message_for_location(self, location: str) -> str:
         num_players = len(self.selected_locations[location])
         if num_players <= 0:
             raise ValueError("Location check requested, but no player was there")

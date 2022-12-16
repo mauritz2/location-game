@@ -12,8 +12,8 @@ socketio.init_app(app, cors_allowed_origins="*")
 def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
-    players = {"424678775":"Player 1", "63408551":"Player 2"}
-    #players = {"424678775":"Player 1"}
+    #players = {"424678775":"Player 1", "63408551":"Player 2"}
+    players = {"592054414":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
@@ -46,13 +46,14 @@ def take_action(data):
 
     game_manager.add_chosen_location(player_id, location)
 
-    if game_manager.is_round_over():
-        emit("DAY_OVER", broadcast=True)
 
     resources = player.get_resources()
     emit("UPDATE_RESOURCES", resources, to=request.sid)
 
     game_manager.end_player_turn()
+
+    if game_manager.is_new_round():
+        emit("DAY_OVER", broadcast=True)
 
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)

@@ -42,7 +42,6 @@ function App() {
   });
 
   socket.on("UPDATE_GAME_STATE", (game_state) => {
-    console.log(game_state);
 
     const current_player = {
       "player_name": game_state["current_player_name"],
@@ -61,7 +60,8 @@ function App() {
     setLogMessages(game_state["log_messages"]);
   });
 
-  socket.on("DAY_END", () => {
+  socket.on("DAY_OVER", () => {
+    console.log("Emitting check location!")
     const player_id = getUUIDFromCookie();
     socket.emit("CHECK_LOCATION", player_id);
   });
@@ -84,7 +84,6 @@ function App() {
 
   function onActionSubmit(data: ActionObject){
     data["player_id"] = getUUIDFromCookie();
-    console.log(data);
     socket.emit("CHOOSE_DAY_ACTION", data);
   }
 
