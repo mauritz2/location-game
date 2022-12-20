@@ -6,6 +6,27 @@ import Cookies from "universal-cookie";
 import LocationDetails from './components/LocationDetails';
 import Resources from "./components/Resources"
 
+/* COOKIE SETTING AND GETTING */ 
+// TODO - move only once instantiation outside of the React main function
+const cookies = new Cookies();
+
+const socket = io("localhost:5000/", {
+  transports: ["websocket"],
+});
+
+function setUUIDCookie(){
+  // TODO - replace with uuid. For some reason importing "uuid" doesn't work
+  // TODO - check if cookie already exists and also set new UID if not
+  const player_id = Math.floor(Math.random() * 1000000000);
+  cookies.set("player_id", player_id);
+}
+
+function getUUIDFromCookie(){
+  const player_id = cookies.get("player_id");
+  return player_id; 
+}
+/* COOKIE SETTING END  */ 
+
 function App() {
   //const [gameState, setGameState] = useState<GameState>({"players":[""], "current_player_name":"","game_phase":""}) 
   const [currentPlayer, setCurrentPlayer] = useState<CurrentPlayer>({"player_name":"", "player_id":""});
@@ -14,29 +35,47 @@ function App() {
   const [logMessages, setLogMessages] = useState<Array<string>>([])
   const [locationFocus, setLocationFocus] = useState<string>("market")
   // Would it be best practice to define a object like this?
+  // For objects as state: https://immerjs.github.io/immer/
+  // Reference: https://immerjs.github.io/immer/example-setstate
   const [resources, setResources] = useState<ResourceObjectAmts>({'coins': 0, 'armor': 0, 'herbs': 0, 'scrolls': 0, 'corpses': 0})
 
-  const socket = io("localhost:5000/", {
-    transports: ["websocket"],
-  });
-
-  /* COOKIE SETTING AND GETTING */ 
-  const cookies = new Cookies();
-  
-  function setUUIDCookie(){
-    // TODO - replace with uuid. For some reason importing "uuid" doesn't work
-    // TODO - check if cookie already exists and also set new UID if not
-    const player_id = Math.floor(Math.random() * 1000000000);
-    cookies.set("player_id", player_id);
+  function startGame() {
+    // TODO - re-make to send player_id for all players, then start game
+    // Start game should take all player_ids sent and add them to a new game
+    debugger
+    socket.emit("START_GAME_CLICK")
   }
 
-  function getUUIDFromCookie(){
-    const player_id = cookies.get("player_id");
-    return player_id; 
+  function onLocationSelect(locationName: string) {
+    setLocationFocus(locationName);
   }
-  /* COOKIE SETTING END  */ 
 
-  /* SOCKET LISTENERS */
+  function onActionSubmit(data: ActionObject){
+    data["player_id"] = getUUIDFromCookie();
+    socket.emit("CHOOSE_DAY_ACTION", data);
+  }
+
+  function announceLocation(location: string){
+    // TODO - replace dummy player ID
+    const data = {
+        "player_id": getUUIDFromCookie(),
+        "location": location
+      }
+    socket.emit("ANNOUNCE_LOCATION", data);
+    }
+
+
+  useEffect(() =>  {
+    startGame(); // To be tied to a start game button eventually
+
+    // Set UUID coookie if it doesn't exist to identify player
+    const existing_player_id = cookies.get("player_id");
+    if(!existing_player_id){
+        setUUIDCookie();
+      }
+
+        /* SOCKET LISTENERS */
+  // TODO - move to useEffect to avoid calling multiple times
   socket.on("UPDATE_RESOURCES", (resources) => {
     setResources(resources);
   });
@@ -71,43 +110,21 @@ function App() {
   })
 
   /* END OF SOCKET LISTENERS */
-
-  function startGame() {
-    // TODO - re-make to send player_id for all players, then start game
-    // Start game should take all player_ids sent and add them to a new game
-    socket.emit("START_GAME_CLICK")
-  }
-
-  function onLocationSelect(locationName: string) {
-    setLocationFocus(locationName);
-  }
-
-  function onActionSubmit(data: ActionObject){
-    data["player_id"] = getUUIDFromCookie();
-    socket.emit("CHOOSE_DAY_ACTION", data);
-  }
-
-  function announceLocation(location: string){
-    // TODO - replace dummy player ID
-    const data = {
-        "player_id": getUUIDFromCookie(),
-        "location": location
-      }
-    socket.emit("ANNOUNCE_LOCATION", data);
-    }
-
-
-  useEffect(() =>  {
-    startGame(); // To be tied to a start game button eventually
-
-    // Set UUID coookie if it doesn't exist to identify player
-    const existing_player_id = cookies.get("player_id");
-    if(!existing_player_id){
-        setUUIDCookie();
-      }
   
-  }, []);
-  
+  },
+    // TODO - unsuscribe to what you suscribed to
+    // Consider containing file to 100 lines - move logic to context etc.
+   []);
+
+  /*
+   useEffect(() => {
+     // subscribe to what you need
+   
+     return () => {
+       // unsuscribe to what you suscribed to
+     }
+   }, []) */
+
   return (
     <div id="overall-container">
         <Resources
@@ -136,6 +153,7 @@ function App() {
   );
 }
 
+// TODO - add in a types.tsx file for the types (all of them in the same folder) 
 type ActionObject = {
   action: string
   location: string
@@ -150,6 +168,8 @@ type ResourceObjectAmts = {
   scrolls: number;
   corpses: number;
 }
+// TODO - add in undefined
+// TODO - check if more types can have | undefined 
 
 type CurrentPlayer = {
   player_name: string;
