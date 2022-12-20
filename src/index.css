@@ -121,10 +121,35 @@ form div {
   margin-bottom: 1em;
 }
 
-/* Resources */
+/* Resources and character portrait */
 
 #resource-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   text-align: center;
+}
+
+#character-portrait {
+  max-width: 10em;
+  max-height: 10em;
+  display: inline;
+  border-radius: 50%;
+  border-width: 5px;
+  border-style: solid;
+  border-color: var(--turquoise);
+}
+
+#character-title {
+  font-weight: bold;
+}
+
+#objective {
+  font-weight: bold;
+}
+
+/* Icons */
+
+.icon {
+  max-width: 2em;
+  max-height: 2em;
 }

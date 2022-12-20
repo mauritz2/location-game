@@ -5,6 +5,7 @@ import Location from "./components/Location";
 import LocationDetails from "./components/LocationDetails";
 import Resources from "./components/Resources";
 import { useRealTime } from "./context/real-time-context";
+import CharacterPortrait from "./components/CharacterPortrait";
 
 function App() {
   const realTime = useRealTime();
@@ -23,6 +24,7 @@ function App() {
 
   return (
     <div id="overall-container">
+      <CharacterPortrait />
       <Resources resource_amts={realTime.resources} />
       <h3>
         {realTime.currentPlayer.player_name} is currently choosing what location
