@@ -129,6 +129,12 @@ form div {
   text-align: center;
 }
 
+.resource-icon {
+  display: inline;
+  height: 1.5em;
+  width: 1.5em;
+}
+
 #character-portrait {
   max-width: 10em;
   max-height: 10em;

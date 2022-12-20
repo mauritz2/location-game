@@ -7,6 +7,13 @@ import Resources from "./components/Resources";
 import { useRealTime } from "./context/real-time-context";
 import CharacterDetails from "./components/CharacterDetails";
 
+// Project TODO
+// Build report player functionality
+// Build in trading
+// Create all classes
+// Replace market with mage tower
+// 
+
 function App() {
   const realTime = useRealTime();
   const [locationFocus, setLocationFocus] = React.useState<string>("market");
@@ -30,9 +37,10 @@ function App() {
       <div id="gameplay-container">
         <GameLog logMessages={realTime.logMessages} />
         <div id="location-container">
-          <Location name={"graveyard"} onSelect={onLocationSelect} />
           <Location name={"market"} onSelect={onLocationSelect} />
+          <Location name={"library"} onSelect={onLocationSelect} />
           <Location name={"watchmens-quarters"} onSelect={onLocationSelect} />
+          <Location name={"graveyard"} onSelect={onLocationSelect} />
         </div>
         <div id="location-context-container">
           <LocationDetails

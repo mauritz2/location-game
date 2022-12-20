@@ -10,10 +10,20 @@ function Resources({resource_amts}: ResourcesObject){
 
     return(
         <div id="resource-grid">
-            <div className="resource">Coins<div className="resource-num">{coins_amt}</div></div>
-            <div className="resource">Armor<div className="resource-num">{armor_amt}</div></div>
-            <div className="resource">Herbs<div className="resource-num">{herbs_amt}</div></div>
+            <div className="resource">Coins
+                <div className="resource-num">{coins_amt}</div>
+            </div>
+            <div className="resource">
+                Armor
+                <div className="resource-icon armor"></div>
+                <div className="resource-num">{armor_amt}</div>
+            </div>
+            <div className="resource">Herbs
+                <div className="resource-num">{herbs_amt}</div>
+            </div>
+            
             <div className="resource">Scrolls<div className="resource-num">{scrolls_amt}</div></div>
+            
             <div className="resource">Corpses<div className="resource-num">{corpses_amt}</div></div>
         </div>
     );

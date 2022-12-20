@@ -3,6 +3,7 @@ import graveyard from "../static/graveyard.png";
 import market from "../static/market.png";
 import Button from './Button';
 import watchmensQuarters from "../static/watchmens-quarters.png";
+import library from "../static/library.png";
 
 function Location({name, onSelect}: LocationProps) {
 
@@ -16,6 +17,9 @@ function Location({name, onSelect}: LocationProps) {
             break;        
         case "watchmens-quarters":
             image = watchmensQuarters;
+            break;
+        case "library":
+            image = library;
             break;
     }
     

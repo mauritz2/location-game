@@ -9,6 +9,7 @@ class Character():
         self.character = character
         self.objective = None
         self.objective_text = None
+        self.objective_fulfilled = False
         self._set_class_attributes(character=character)
 
     
