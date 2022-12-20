@@ -40,6 +40,8 @@ export const useRealTime = () => {
   const [logMessages, setLogMessages] = useState<Array<string>>([]);
   const [showSubmit, setShowSubmit] = useState<boolean>(false);
   const [currentPhase, setCurrentPhase] = useState<string>("");
+  const [character, setCharacter] = useState<string>("");
+
 
   const [currentPlayer, setCurrentPlayer] = useState<CurrentPlayer>({
     player_name: "",
@@ -47,6 +49,7 @@ export const useRealTime = () => {
   });
 
   React.useEffect(() => {
+    /* SOCKET LISTENERS */
     socket.on("DAY_OVER", () => {
       console.log("Emitting check location!");
       const player_id = Cookies.getUUIDFromCookie();
@@ -57,7 +60,6 @@ export const useRealTime = () => {
       console.log(msg);
     });
 
-    /* SOCKET LISTENERS */
     socket.on("UPDATE_RESOURCES", (resources) => {
       context.setResources(resources);
     });
@@ -68,20 +70,27 @@ export const useRealTime = () => {
         player_id: game_state["current_player_id"],
       };
 
+      setCurrentPlayer(current_player);
+      setCurrentPhase(game_state["game_phase"]);
+      setLogMessages(game_state["log_messages"]);
+
       if (current_player.player_id == Cookies.getUUIDFromCookie()) {
         setShowSubmit(true);
       } else {
         setShowSubmit(false);
       }
 
-      setCurrentPlayer(current_player);
-      setCurrentPhase(game_state["game_phase"]);
-      setLogMessages(game_state["log_messages"]);
     });
 
+    // TODO - replace placeholder 
+    setCharacter("highwayman");
+
+    // Below causes WebSocket failure - "WebSocket is closed before the connection is established"
+    /* 
     return () => {
       socket.close();
     };
+   */
   }, []);
 
   return {

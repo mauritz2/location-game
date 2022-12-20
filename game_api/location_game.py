@@ -12,8 +12,8 @@ socketio.init_app(app, cors_allowed_origins="*")
 def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
-    players = {"787065803":"Player 1", "402386716":"Player 2"}
-    #players = {"787065803":"Player 1"}
+    #players = {"787065803":"Player 1", "402386716":"Player 2"}
+    players = {"372646307":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
@@ -42,10 +42,11 @@ def take_action(data):
     match action:
         # TODO - resolve actions at round end as opposed to immediately
         case "earn":
-            player.add_remove_coins(2)
+            player.add_remove_resource("coins", 2)
+        case "getArmor":
+            player.add_remove_resource("armor", 1)
 
     game_manager.add_chosen_location(player_id, location)
-
 
     resources = player.get_resources()
     emit("UPDATE_RESOURCES", resources, to=request.sid)

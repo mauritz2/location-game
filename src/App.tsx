@@ -5,14 +5,11 @@ import Location from "./components/Location";
 import LocationDetails from "./components/LocationDetails";
 import Resources from "./components/Resources";
 import { useRealTime } from "./context/real-time-context";
-import CharacterPortrait from "./components/CharacterPortrait";
+import CharacterDetails from "./components/CharacterDetails";
 
 function App() {
   const realTime = useRealTime();
-  //const [gameState, setGameState] = useState<GameState>({"players":[""], "current_player_name":"","game_phase":""})
-
   const [locationFocus, setLocationFocus] = React.useState<string>("market");
-  // Would it be best practice to define a object like this?
 
   function onLocationSelect(locationName: string) {
     setLocationFocus(locationName);
@@ -24,7 +21,7 @@ function App() {
 
   return (
     <div id="overall-container">
-      <CharacterPortrait />
+      <CharacterDetails />
       <Resources resource_amts={realTime.resources} />
       <h3>
         {realTime.currentPlayer.player_name} is currently choosing what location
@@ -35,6 +32,7 @@ function App() {
         <div id="location-container">
           <Location name={"graveyard"} onSelect={onLocationSelect} />
           <Location name={"market"} onSelect={onLocationSelect} />
+          <Location name={"watchmens-quarters"} onSelect={onLocationSelect} />
         </div>
         <div id="location-context-container">
           <LocationDetails

@@ -1,14 +1,11 @@
 import React from 'react';
-import PropTypes from "prop-types";
-import graveyard from "../static/graveyard.png"
+import graveyard from "../static/graveyard.png";
 import market from "../static/market.png";
 import Button from './Button';
-
-// import io from "socket.io-client";
+import watchmensQuarters from "../static/watchmens-quarters.png";
 
 function Location({name, onSelect}: LocationProps) {
 
-    // Is it OK to have "loose" variables like these? Or should they be part of useEffect()?
     let image = "";
     switch(name){
         case "graveyard":
@@ -17,6 +14,9 @@ function Location({name, onSelect}: LocationProps) {
         case "market":
             image = market;
             break;        
+        case "watchmens-quarters":
+            image = watchmensQuarters;
+            break;
     }
     
     return(

@@ -1,5 +1,7 @@
+from character import Character, Characters
 
-class Player:
+
+class Player(Character):
 
     def __init__(self, player_id: str, player_name: str) -> None:
         self.player_id = player_id
@@ -9,12 +11,17 @@ class Player:
         self.herbs = 0
         self.scrolls = 0
         self.corpses = 0
+        self.character = Character(character=Characters.highwayman.value) 
 
-    def add_remove_coins(self, amount: int) -> None:
+    def add_remove_resource(self, resource, amount: int) -> None:
         """
         Takes a negative or positive coin amount as input and adds/removes it from the player
         """
-        self.coins += amount
+        match resource:
+            case "coins":
+                self.coins += amount
+            case "armor":
+                self.armor += amount
 
     def get_resources(self):
         data = {
@@ -24,5 +31,5 @@ class Player:
             "scrolls": self.scrolls,
             "corpses": self.corpses
         }
-        
+
         return data

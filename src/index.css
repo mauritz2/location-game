@@ -150,6 +150,10 @@ form div {
 /* Icons */
 
 .icon {
-  max-width: 2em;
-  max-height: 2em;
+  max-width: 1.5em;
+  max-height: 1.5em;
+}
+
+.armor {
+  content: url("static/armor-icon.png");
 }
