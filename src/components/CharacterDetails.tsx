@@ -1,7 +1,7 @@
 import React from "react";
 import highwayman from "./../static/highwayman.png"; 
 
-function CharacterPortrait() {
+function CharacterPortrait({character}) {
     return(
         <div>
             <img id="character-portrait" src={highwayman}></img>

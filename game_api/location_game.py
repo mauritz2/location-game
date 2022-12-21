@@ -17,6 +17,17 @@ def start_game():
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
+    
+
+@socketio.on("GET_CHARACTER")
+def get_character(player_id: str):
+    """
+    Send the player's assigned character and related data
+    """
+    global game_manager
+    character = game_manager.players[player_id].character.get_character_data()
+    emit("UPDATE_CHARACTER", character, to=request.sid)
+
 
 @socketio.on("CHECK_LOCATION")
 def check_location(player_id: str):

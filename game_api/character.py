@@ -17,4 +17,14 @@ class Character():
         match character:
             case "highwayman":
                 self.objective = ["armor", "armor", "armor"]
-                self.objective = "Obtain a full set of armor"
+                self.objective_text = "Obtain a full set of armor"
+                self.bonus = "+1 from each additional armor beyond the objective && +1 fighting in the watchmen's quarters"
+
+    def get_character_data(self) -> dict[str]:
+        character = {
+            "character":self.character,
+            "objective": self.objective,
+            "objective_text": self.objective_text,
+            "objective_bonus": self.objective_bonus,
+            }
+        return character

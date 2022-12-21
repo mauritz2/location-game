@@ -17,3 +17,9 @@ export type CurrentPlayer = {
   player_name: string;
   player_id: string;
 };
+
+export type Character = {
+  "character": string;
+  "objective": string;
+  "bonus": string;
+}
