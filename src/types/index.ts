@@ -22,4 +22,4 @@ export type Character = {
   "character": string;
   "objective": string;
   "bonus": string;
-}
+} | undefined;

@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import io from "socket.io-client";
 import * as Cookies from "../lib/cookies";
-import { ActionObject, CurrentPlayer, ResourceObjectAmts } from "../types";
+import { ActionObject, CurrentPlayer, ResourceObjectAmts, Character } from "../types";
 
 type RealTimeContextState = {
   setResources: (resources: ResourceObjectAmts) => void;
   resources: ResourceObjectAmts;
+  setCharacter: (character: Character) => void;
+  character: Character;
 } | null;
 
 const RealTimeContext = React.createContext<RealTimeContextState>(null);
@@ -40,7 +42,7 @@ export const useRealTime = () => {
   const [logMessages, setLogMessages] = useState<Array<string>>([]);
   const [showSubmit, setShowSubmit] = useState<boolean>(false);
   const [currentPhase, setCurrentPhase] = useState<string>("");
-  const [character, setCharacter] = useState<string>("");
+  const [character, setCharacter] = useState<Character>();
 
 
   const [currentPlayer, setCurrentPlayer] = useState<CurrentPlayer>({
@@ -64,6 +66,13 @@ export const useRealTime = () => {
       context.setResources(resources);
     });
 
+    
+    socket.on("UPDATE_CHARACTER", (character) => {
+      setCharacter(character);
+    });
+
+
+
     socket.on("UPDATE_GAME_STATE", (game_state) => {
       const current_player = {
         player_name: game_state["current_player_name"],
@@ -82,6 +91,11 @@ export const useRealTime = () => {
 
     });
 
+    
+    getCharacter: () => {
+      socket.emit("GET_CHARACTER")
+    }
+    // Continue here to get the character object by player UID
     // TODO - replace placeholder 
     setCharacter("highwayman");
 
@@ -98,6 +112,7 @@ export const useRealTime = () => {
     currentPlayer,
     showSubmit,
     logMessages,
+    character,
     resources: context!.resources,
     announceLocation: (location: string) => {
       const data = {

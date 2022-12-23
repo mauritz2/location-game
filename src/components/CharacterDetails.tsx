@@ -1,7 +1,8 @@
 import React from "react";
 import highwayman from "./../static/highwayman.png"; 
+import { Character } from "../types";
 
-function CharacterPortrait({character}) {
+function CharacterDetails({character}: Character) {
     return(
         <div>
             <img id="character-portrait" src={highwayman}></img>
@@ -16,4 +17,4 @@ function CharacterPortrait({character}) {
     );
 }
 
-export default CharacterPortrait;
+export default CharacterDetails;

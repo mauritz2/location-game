@@ -29,7 +29,7 @@ function App() {
   return (
     <div id="overall-container">
       <CharacterDetails
-        character=realTime.character />
+        character={realTime.character} />
       <Resources resource_amts={realTime.resources} />
       <h3>
         {realTime.currentPlayer.player_name} is currently choosing what location
