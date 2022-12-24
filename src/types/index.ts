@@ -20,6 +20,7 @@ export type CurrentPlayer = {
 
 export type Character = {
   "character": string;
-  "objective": string;
-  "bonus": string;
-} | undefined;
+  "objective": Array<string>;
+  "objective_bonus": string;
+  "objective_text": string;
+}

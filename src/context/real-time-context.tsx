@@ -6,8 +6,6 @@ import { ActionObject, CurrentPlayer, ResourceObjectAmts, Character } from "../t
 type RealTimeContextState = {
   setResources: (resources: ResourceObjectAmts) => void;
   resources: ResourceObjectAmts;
-  setCharacter: (character: Character) => void;
-  character: Character;
 } | null;
 
 const RealTimeContext = React.createContext<RealTimeContextState>(null);
@@ -42,8 +40,14 @@ export const useRealTime = () => {
   const [logMessages, setLogMessages] = useState<Array<string>>([]);
   const [showSubmit, setShowSubmit] = useState<boolean>(false);
   const [currentPhase, setCurrentPhase] = useState<string>("");
-  const [character, setCharacter] = useState<Character>();
+  const [character, setCharacter] = useState<Character>({
+    "character": "",
+    "objective": [""],
+    "objective_bonus": "",
+    "objective_text": "",
+  });
 
+  const player_id = Cookies.getUUIDFromCookie();
 
   const [currentPlayer, setCurrentPlayer] = useState<CurrentPlayer>({
     player_name: "",
@@ -53,8 +57,6 @@ export const useRealTime = () => {
   React.useEffect(() => {
     /* SOCKET LISTENERS */
     socket.on("DAY_OVER", () => {
-      console.log("Emitting check location!");
-      const player_id = Cookies.getUUIDFromCookie();
       socket.emit("CHECK_LOCATION", player_id);
     });
 
@@ -65,13 +67,10 @@ export const useRealTime = () => {
     socket.on("UPDATE_RESOURCES", (resources) => {
       context.setResources(resources);
     });
-
     
-    socket.on("UPDATE_CHARACTER", (character) => {
-      setCharacter(character);
+    socket.on("UPDATE_CHARACTER", (character_data) => {
+      setCharacter(character_data);
     });
-
-
 
     socket.on("UPDATE_GAME_STATE", (game_state) => {
       const current_player = {
@@ -91,13 +90,7 @@ export const useRealTime = () => {
 
     });
 
-    
-    getCharacter: () => {
-      socket.emit("GET_CHARACTER")
-    }
-    // Continue here to get the character object by player UID
-    // TODO - replace placeholder 
-    setCharacter("highwayman");
+    socket.emit("GET_CHARACTER", player_id)
 
     // Below causes WebSocket failure - "WebSocket is closed before the connection is established"
     /* 
@@ -106,6 +99,9 @@ export const useRealTime = () => {
     };
    */
   }, []);
+
+
+  console.log(character)
 
   return {
     currentPhase,

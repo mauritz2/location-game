@@ -2,7 +2,8 @@ import React from "react";
 import highwayman from "./../static/highwayman.png"; 
 import { Character } from "../types";
 
-function CharacterDetails({character}: Character) {
+function CharacterDetails({character_name}: string) {
+    console.log(character_name);
     return(
         <div>
             <img id="character-portrait" src={highwayman}></img>
