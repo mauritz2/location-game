@@ -3,7 +3,7 @@ from character import Character, Characters
 
 class Player(Character):
 
-    def __init__(self, player_id: str, player_name: str) -> None:
+    def __init__(self, player_id: str, player_name: str, character: Characters) -> None:
         self.player_id = player_id
         self.player_name = player_name
         self.coins = 0
@@ -11,11 +11,12 @@ class Player(Character):
         self.herbs = 0
         self.scrolls = 0
         self.corpses = 0
-        self.character = Character(character=Characters.highwayman.value) 
+        # TODO - Review this. We inherit from Character, but also instantiate it here.
+        self.character = Character(character) 
 
     def add_remove_resource(self, resource, amount: int) -> None:
         """
-        Takes a negative or positive coin amount as input and adds/removes it from the player
+        Takes a negative or positive resource amount as input and adds/removes it from the player
         """
         match resource:
             case "coins":

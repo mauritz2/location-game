@@ -8,6 +8,7 @@ import { useRealTime } from "./context/real-time-context";
 import CharacterDetails from "./components/CharacterDetails";
 
 // Project TODO
+// Enable gamelog messages for specific people
 // Build report player functionality
 // Build in trading
 // Create all classes
@@ -29,7 +30,10 @@ function App() {
   return (
     <div id="overall-container">
       <CharacterDetails
-        character_name={realTime.character.character} />
+        character_name={realTime.character.character}
+        objective={realTime.character.objective}
+        objective_text={realTime.character.objective_text}
+        objective_bonus={realTime.character.objective_text} />
       <Resources resource_amts={realTime.resources} />
       <h3>
         {realTime.currentPlayer.player_name} is currently choosing what location

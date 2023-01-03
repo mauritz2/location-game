@@ -3,6 +3,7 @@ from enum import Enum, auto
 
 class Characters(Enum):
     highwayman = "highwayman"
+    toxicologist = "toxicologist"
 
 class Character():
     def __init__(self, character: Characters):
@@ -18,7 +19,11 @@ class Character():
             case "highwayman":
                 self.objective = ["armor", "armor", "armor"]
                 self.objective_text = "Obtain a full set of armor"
-                self.objective_bonus = "+1 from each additional armor beyond the objective && +1 fighting in the watchmen's quarters"
+                self.objective_bonus = "+1 from each additional armor beyond the objective && +1 battling in the watchmen's quarters"
+            case "toxicologist":
+                self.objective = ["herbs", "herbs", "herbs"]
+                self.objective_text = "Brew a poison"
+                self.objective_bonus = "+1 from each additional herbs beyond objective && +1 battling in the library"
 
     def get_character_data(self) -> dict[str]:
         character = {

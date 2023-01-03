@@ -147,6 +147,7 @@ form div {
 
 #character-title {
   font-weight: bold;
+  text-transform: capitalize;
 }
 
 #objective {
