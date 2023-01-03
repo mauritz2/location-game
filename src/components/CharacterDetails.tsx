@@ -2,7 +2,7 @@ import React from "react";
 import highwayman from "./../static/highwayman.png"; 
 import { Character } from "../types";
 
-function CharacterDetails({character_name}: string) {
+function CharacterDetails({character_name}: CharacterDetailsProps) {
     console.log(character_name);
     return(
         <div>
@@ -16,6 +16,10 @@ function CharacterDetails({character_name}: string) {
                 </ul>
         </div>
     );
+}
+
+type CharacterDetailsProps = {
+    character_name: string;
 }
 
 export default CharacterDetails;
