@@ -15,6 +15,7 @@ class Character():
 
     
     def _set_class_attributes(self, character: Characters):
+        # TODO - replace bonuses with area_bonus and objective_bonus ? 
         match character:
             case "highwayman":
                 self.objective = ["armor", "armor", "armor"]
@@ -29,7 +30,7 @@ class Character():
         character = {
             "character":self.character,
             "objective": self.objective,
-            "objective_text": self.objective_text,
-            "objective_bonus": self.objective_bonus,
+            "objectiveText": self.objective_text,
+            "objectiveBonus": self.objective_bonus,
             }
         return character

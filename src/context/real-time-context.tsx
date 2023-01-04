@@ -43,8 +43,8 @@ export const useRealTime = () => {
   const [character, setCharacter] = useState<Character>({
     "character": "",
     "objective": [""],
-    "objective_bonus": "",
-    "objective_text": "",
+    "objectiveBonus": "",
+    "objectiveText": "",
   });
 
   const player_id = Cookies.getUUIDFromCookie();
@@ -61,6 +61,7 @@ export const useRealTime = () => {
     });
 
     socket.on("LOCATION_MSG", (msg) => {
+      // TODO - update so this goes to private chat
       console.log(msg);
     });
 

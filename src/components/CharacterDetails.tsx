@@ -1,13 +1,12 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Highwayman from "./../static/highwayman.png"; 
 import Toxicologist from "./../static/toxicologist.png"; 
 import { Character } from "../types";
 
-function CharacterDetails({character_name, objective, objective_text, objective_bonus}: CharacterDetailsProps) {
-    console.log(character_name);
-
+function CharacterDetails({characterName, objective, objectiveText, objectiveBonus}: CharacterDetailsProps) {
+    
     let image = "";
-    switch(character_name){
+    switch(characterName){
         case "highwayman":
             image = Highwayman;
             break;
@@ -16,25 +15,33 @@ function CharacterDetails({character_name, objective, objective_text, objective_
             break;
     }
 
+    // Create JSX element for resource icons for resources to reach objective
+    let objective_jsx: Array<JSX.Element> = []
+    objective.forEach(resource => {
+        objective_jsx.push(<span className={"icon " + resource}></span>)
+    });
+    
+    const bonuses = objectiveBonus.split("&&")
+
     return(
         <div>
             <img id="character-portrait" src={image}></img>
-            <p id="character-title">{character_name}</p>
-            <p><strong>Objective: </strong>{objective_text}(<span className="icon armor" /><span className="icon armor" /><span className="icon armor" />)</p>            
+            <p id="character-title">{characterName}</p>
+            <p><strong>Objective: </strong>{objectiveText}: {objective_jsx}</p>            
             <p><strong>Bonus: </strong></p>
                 <ul>
-                    <li>+1 Fighting in the watchmen’s quarters</li>            
-                    <li>+1 From each additional armor beyond objective</li>            
+                    <li>{bonuses[0]}</li>            
+                    <li>{bonuses[1]}</li>            
                 </ul>
         </div>
     );
 }
 
 type CharacterDetailsProps = {
-    character_name: string;
+    characterName: string;
     objective: Array<string>;
-    objective_text: string;
-    objective_bonus: string;
+    objectiveText: string;
+    objectiveBonus: string;
 }
 
 export default CharacterDetails;

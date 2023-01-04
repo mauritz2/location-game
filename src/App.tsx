@@ -27,13 +27,16 @@ function App() {
     realTime.startGame(); // To be tied to a start game button eventually
   }, []);
 
+  console.log(realTime.character.objectiveBonus);
+  console.log(realTime.character.objective);
+
   return (
     <div id="overall-container">
       <CharacterDetails
-        character_name={realTime.character.character}
+        characterName={realTime.character.character}
         objective={realTime.character.objective}
-        objective_text={realTime.character.objective_text}
-        objective_bonus={realTime.character.objective_text} />
+        objectiveText={realTime.character.objectiveText}
+        objectiveBonus={realTime.character.objectiveBonus} />
       <Resources resource_amts={realTime.resources} />
       <h3>
         {realTime.currentPlayer.player_name} is currently choosing what location

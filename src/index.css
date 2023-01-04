@@ -159,8 +159,13 @@ form div {
 .icon {
   max-width: 1.5em;
   max-height: 1.5em;
+  margin-left: 0.2em;
 }
 
 .armor {
   content: url("static/armor-icon.png");
+}
+
+.herbs {
+  content: url("static/herbs-icon.png");
 }
