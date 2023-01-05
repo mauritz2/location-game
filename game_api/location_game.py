@@ -12,8 +12,8 @@ socketio.init_app(app, cors_allowed_origins="*")
 def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
-    #players = {"787065803":"Player 1", "402386716":"Player 2"}
-    players = {"514539290":"Player 1"}
+    players = {"882725216":"Player 1", "484327282":"Player 2"}
+    #players = {"882725216":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
@@ -29,7 +29,7 @@ def get_character(player_id: str):
     emit("UPDATE_CHARACTER", character, to=request.sid)
 
 
-@socketio.on("CHECK_LOCATION")
+""" @socketio.on("CHECK_LOCATION")
 def check_location(player_id: str):
     global game_manager
 
@@ -37,7 +37,7 @@ def check_location(player_id: str):
     msg = game_manager.get_message_for_location(location)
 
     emit("LOCATION_MSG", msg, to=request.sid)
-
+ """
 
 @socketio.on("CHOOSE_DAY_ACTION")
 def take_action(data):
@@ -71,6 +71,13 @@ def take_action(data):
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
     
 
+@socketio.on("GET_LOG_MESSAGES")
+def get_log_messages(player_id):
+    global game_manager
+    msgs = game_manager.get_available_msgs(player_id)
+    emit("UPDATE_LOG_MSGS", msgs, to=request.sid)
+
+
 @socketio.on("ANNOUNCE_LOCATION")
 def announce_location(data):
     global game_manager
@@ -81,7 +88,10 @@ def announce_location(data):
 
     msg = f"{player_name} is announcing that they will visit the {location} this night."    
     # TODO - the game log can't be universal - it needs to be managed at the player level?
-    game_manager.game_log.messages.append(msg)
+    
+    
+    #game_manager.game_log.messages.append(msg)
+    game_manager.add_msg_to_log(msg, player_id)
 
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)

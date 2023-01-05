@@ -43,8 +43,8 @@ export const useRealTime = () => {
   const [character, setCharacter] = useState<Character>({
     "character": "",
     "objective": [""],
-    "objectiveBonus": "",
     "objectiveText": "",
+    "objectiveBonus": ""
   });
 
   const player_id = Cookies.getUUIDFromCookie();
@@ -56,14 +56,19 @@ export const useRealTime = () => {
 
   React.useEffect(() => {
     /* SOCKET LISTENERS */
-    socket.on("DAY_OVER", () => {
+    /*socket.on("DAY_OVER", () => {
       socket.emit("CHECK_LOCATION", player_id);
-    });
+    }); */
 
-    socket.on("LOCATION_MSG", (msg) => {
+/*     socket.on("LOCATION_MSG", (msg) => {
       // TODO - update so this goes to private chat
+      // TODO - refactor to remove this and just emit UPDATE_LOG_MSGS intead
       console.log(msg);
-    });
+    }); */
+
+    socket.on("UPDATE_LOG_MSGS", (msgs) => {
+      setLogMessages(msgs);
+    })
 
     socket.on("UPDATE_RESOURCES", (resources) => {
       context.setResources(resources);
@@ -73,21 +78,24 @@ export const useRealTime = () => {
       setCharacter(character_data);
     });
 
-    socket.on("UPDATE_GAME_STATE", (game_state) => {
+    socket.on("UPDATE_GAME_STATE", (gameState) => {
       const current_player = {
-        player_name: game_state["current_player_name"],
-        player_id: game_state["current_player_id"],
+        player_name: gameState["current_player_name"],
+        player_id: gameState["current_player_id"],
       };
 
       setCurrentPlayer(current_player);
-      setCurrentPhase(game_state["game_phase"]);
-      setLogMessages(game_state["log_messages"]);
+      setCurrentPhase(gameState["game_phase"]);
 
       if (current_player.player_id == Cookies.getUUIDFromCookie()) {
         setShowSubmit(true);
       } else {
         setShowSubmit(false);
       }
+
+      // Ask for the your log messages 
+      socket.emit("GET_LOG_MESSAGES", current_player.player_id);
+
 
     });
 
@@ -100,9 +108,6 @@ export const useRealTime = () => {
     };
    */
   }, []);
-
-
-  console.log(character)
 
   return {
     currentPhase,

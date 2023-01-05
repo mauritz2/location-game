@@ -1,5 +1,5 @@
-from random import choice
-from enum import Enum, auto
+import datetime
+from enum import Enum
 from dataclasses import dataclass
 from player import Player
 
@@ -19,7 +19,10 @@ class GameManager():
         self.current_player = list(self.players.values())[0] # TODO - reintroduce random but consistent player order
         self.players_waiting_for_turn = list(self.players.keys())
         self.game_phase = GamePhases.Day
-        self.game_log = GameLog(messages=[])
+        self.game_log = []
+        #message: str
+        #player_id: int
+        #time_log: self.
         self.selected_locations = {}
 
     @staticmethod
@@ -41,6 +44,7 @@ class GameManager():
         """
         return True if len(self.players_waiting_for_turn) == 0 else False
 
+
     def is_new_round(self) -> None:
         """
         Checks if any players have taken their turn - if not it's considered a new round.
@@ -61,11 +65,21 @@ class GameManager():
         self.game_phase = GamePhases.Night
         self.players_waiting_for_turn = list(self.players.keys())
 
+        # Resolve user locations - players should be notified 
+        # in the game log if they are alone or someone else is at their location
+        # TODO - this could be refactored so that each player instance holds the location they've chosen
+        # for that round. That would remove the get_chosen_location_by_id() func. 
+        for player_id in self.players.keys():
+            chosen_loc = self.get_chosen_location_by_id(player_id)
+            msg = self.get_message_for_location(chosen_loc)
+            self.add_msg_to_log(msg=msg, player_id=player_id)
+
     def get_chosen_location_by_id(self, player_id: str) -> str:
         # TODO - create Enum for locations
         for location, player_ids in self.selected_locations.items():
             if player_id in player_ids:
                 return location
+
 
     def get_message_for_location(self, location: str) -> str:
         num_players = len(self.selected_locations[location])
@@ -79,6 +93,7 @@ class GameManager():
             msg = f"In the shadows, you can spot the silhouettes of {num_players - 1} other players at the {location}"
         return msg
 
+
     def get_game_state(self) -> dict:
         """
         Return a serializable game state object for the front-end to render
@@ -88,10 +103,21 @@ class GameManager():
             "current_player_name": self.current_player.player_name,
             "current_player_id": self.current_player.player_id,
             "game_phase": self.game_phase.value,
-            "log_messages": self.game_log.messages
         }
 
         return game_state
+
+
+    def get_available_msgs(self, player_id: int) -> list[str]:
+        """
+        Gets all the readable log messages for a specific player
+        """
+        msgs = [msg.message for msg in self.game_log if msg.player_id == player_id or msg.player_id == "ALL"]
+        return msgs
+
+    def add_msg_to_log(self, msg:str, player_id:int = "ALL") -> None:
+        msg_entry = LogMessage(message=msg, player_id=player_id)
+        self.game_log.append(msg_entry)
 
 class GamePhases(Enum):
     """
@@ -104,5 +130,6 @@ class GamePhases(Enum):
 
 
 @dataclass
-class GameLog:
-    messages: list[str]
+class LogMessage:
+    message: str
+    player_id: str | int # Either a player_id int or "ALL" to indicate it's public 

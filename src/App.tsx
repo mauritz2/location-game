@@ -27,9 +27,6 @@ function App() {
     realTime.startGame(); // To be tied to a start game button eventually
   }, []);
 
-  console.log(realTime.character.objectiveBonus);
-  console.log(realTime.character.objective);
-
   return (
     <div id="overall-container">
       <CharacterDetails
