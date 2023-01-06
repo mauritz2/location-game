@@ -67,7 +67,13 @@ export const useRealTime = () => {
     }); */
 
     socket.on("UPDATE_LOG_MSGS", (msgs) => {
-      setLogMessages(msgs);
+      let oldLogMsgs = new Set<string>(logMessages)
+      let allLogMsgs = new Set<string>(msgs);
+      let newLogMsgs = new Set<string>([...allLogMsgs].filter(x => !oldLogMsgs.has(x)));
+      let newLogMsgsArr = Array.from(newLogMsgs);
+      //let newLogMessages = msgs.filter(x => !logMessages.includes(x));
+      setLogMessages([...logMessages, ...newLogMsgsArr]);
+
     })
 
     socket.on("UPDATE_RESOURCES", (resources) => {

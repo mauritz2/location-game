@@ -64,7 +64,7 @@ class GameManager():
     def end_round(self) -> None:
         self.game_phase = GamePhases.Night
         self.players_waiting_for_turn = list(self.players.keys())
-
+        self.current_player = self.players[self.players_waiting_for_turn[0]]
         # Resolve user locations - players should be notified 
         # in the game log if they are alone or someone else is at their location
         # TODO - this could be refactored so that each player instance holds the location they've chosen
@@ -73,6 +73,7 @@ class GameManager():
             chosen_loc = self.get_chosen_location_by_id(player_id)
             msg = self.get_message_for_location(chosen_loc)
             self.add_msg_to_log(msg=msg, player_id=player_id)
+        self.selected_locations = {}
 
     def get_chosen_location_by_id(self, player_id: str) -> str:
         # TODO - create Enum for locations
