@@ -3,7 +3,7 @@ export type ResourceObjectAmts = {
   armor: number;
   herbs: number;
   scrolls: number;
-  corpses: number;
+  bones: number;
 };
 
 export type ActionObject = {

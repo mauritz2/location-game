@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { ResourceObjectAmts } from "../types";
 
 function Resources({resource_amts}: ResourcesObject){
 
@@ -6,7 +7,7 @@ function Resources({resource_amts}: ResourcesObject){
     const armor_amt = resource_amts["armor"]
     const herbs_amt = resource_amts["herbs"]
     const scrolls_amt = resource_amts["scrolls"]
-    const corpses_amt = resource_amts["corpses"]
+    const bones_amt = resource_amts["bones"]
 
     return(
         <div id="resource-grid">
@@ -24,7 +25,7 @@ function Resources({resource_amts}: ResourcesObject){
             
             <div className="resource">Scrolls<div className="resource-num">{scrolls_amt}</div></div>
             
-            <div className="resource">Corpses<div className="resource-num">{corpses_amt}</div></div>
+            <div className="resource">Bones<div className="resource-num">{bones_amt}</div></div>
         </div>
     );
 }
@@ -32,14 +33,5 @@ function Resources({resource_amts}: ResourcesObject){
 type ResourcesObject = {
     resource_amts: ResourceObjectAmts;
 }
-
-type ResourceObjectAmts = {
-    coins: number;
-    armor: number;
-    herbs: number;
-    scrolls: number;
-    corpses: number;
-    }
-      
 
 export default Resources;

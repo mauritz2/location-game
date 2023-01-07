@@ -56,9 +56,9 @@ function MarketActionsForm({onSubmit, showSubmit}:MarketActionsFormProps){
             {selectedAction == "trade" ?
                 <>
                 <p><strong>Choose what to give</strong></p>
-                <ResourceSelector onValueSelect={setResourceToGive} showGold={false}/>
+                <ResourceSelector onValueSelect={setResourceToGive} showGold={false} limitToAvailable={true}/>
                 <p><strong>Choose what to receive</strong></p>
-                <ResourceSelector onValueSelect={setResourceToReceive} showGold={true}/>
+                <ResourceSelector onValueSelect={setResourceToReceive} showGold={true} limitToAvailable={false}/>
                 </>
                 : ""}
 

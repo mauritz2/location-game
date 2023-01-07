@@ -20,7 +20,7 @@ export const RealTimeProvider = ({ children }: { children: JSX.Element }) => {
     armor: 0,
     herbs: 0,
     scrolls: 0,
-    corpses: 0,
+    bones: 0,
   });
 
   return (
