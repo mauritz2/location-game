@@ -13,7 +13,7 @@ import CharacterDetails from "./components/CharacterDetails";
 // Build in trading
 // Create all classes
 // Replace market with mage tower
-// 
+// Make resource names more flexible - i.e. config once ideally
 
 function App() {
   const realTime = useRealTime();
@@ -52,7 +52,7 @@ function App() {
             location={locationFocus}
             announceLocation={realTime.announceLocation}
             onSubmit={realTime.onActionSubmit}
-            showSubmit={realTime.showSubmit}
+            showSubmit={true} //realTime.showSubmit
           />
         </div>
       </div>

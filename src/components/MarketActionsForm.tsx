@@ -1,18 +1,45 @@
+import { match } from "assert";
 import React, { useState } from "react";
+import ResourceSelector from "./ResourceSelector";
 
 function MarketActionsForm({onSubmit, showSubmit}:MarketActionsFormProps){
 
+    // General state for form
     const [selectedAction, setSelectedAction] = useState<string>("");
+    
+    // Market-specific state
+    // TODO - set the type here to be any resource name!
+    const [resourceToGive, setResourceToGive] = useState<string>("");
+    const [resourceToReceive, setResourceToReceive] = useState<string>("");
 
+    
     function handleSubmit(event: React.FormEvent<HTMLFormElement>){
-        const data = {
+        let data = {
             "action": selectedAction,
             "location": "market",
-            "action_details": null 
+            "action_details": {}
         }
         
-        onSubmit(data);
+        switch(selectedAction){
+            case "trade": 
+                let tradeData = {
+                    "resourceToGive": resourceToGive,
+                    "resourceToReceive": resourceToReceive
+                } 
+                data["action_details"] = tradeData
+        }
 
+
+        
+        onSubmit(data);
+    }
+
+    function changeResourceToGive(resource: string){
+        setResourceToGive(resource)
+    }
+
+    function changeResourceToReceive(resource: string){
+        setResourceToReceive(resource)
     }
 
     return(
@@ -26,7 +53,14 @@ function MarketActionsForm({onSubmit, showSubmit}:MarketActionsFormProps){
                 <input type="radio" id="trade" name="action" value="trade" onChange={event => setSelectedAction(event.target.value)} />
                 <label htmlFor="trade">Trade one resource for any other resource or 4 coins</label>
             </div>
-            {selectedAction == "trade" ? <p><i>TBD trade input controls</i></p>: ""}
+            {selectedAction == "trade" ?
+                <>
+                <p><strong>Choose what to give</strong></p>
+                <ResourceSelector onValueSelect={setResourceToGive} showGold={false}/>
+                <p><strong>Choose what to receive</strong></p>
+                <ResourceSelector onValueSelect={setResourceToReceive} showGold={true}/>
+                </>
+                : ""}
 
             <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm action"/>
         </form>
@@ -43,7 +77,7 @@ type MarketActionsFormProps = {
 type ActionObject = {
     action: string;
     location: string;
-    action_details: string | null;
+    action_details: any;
 }
 
 export default MarketActionsForm;

@@ -117,7 +117,8 @@ class GameManager():
         return msgs
 
     def add_msg_to_log(self, msg:str, player_id:int = "ALL") -> None:
-        msg_entry = LogMessage(message=msg, player_id=player_id)
+        # TODO - continue here - need to think about how to fix the changing msg bug
+        msg_entry = LogMessage(message=msg, player_id=player_id, timestamp=datetime.datetime.utcnow())
         self.game_log.append(msg_entry)
 
 class GamePhases(Enum):
@@ -132,5 +133,6 @@ class GamePhases(Enum):
 
 @dataclass
 class LogMessage:
-    message: str
     player_id: str | int # Either a player_id int or "ALL" to indicate it's public 
+    message: str
+    timestamp: datetime

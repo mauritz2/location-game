@@ -1,6 +1,8 @@
 from flask import Flask, request
 from create_game import create_game
 from flask_socketio import SocketIO, emit 
+from player import ResourceEnum
+import game_balance_config as config
 
 global game_manager
 
@@ -12,8 +14,8 @@ socketio.init_app(app, cors_allowed_origins="*")
 def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
-    players = {"148098403":"Player 1", "86601628":"Player 2"}
-    #players = {"882725216":"Player 1"}
+    #players = {"148098403":"Player 1", "86601628":"Player 2"}
+    players = {"25780231":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
@@ -29,33 +31,31 @@ def get_character(player_id: str):
     emit("UPDATE_CHARACTER", character, to=request.sid)
 
 
-""" @socketio.on("CHECK_LOCATION")
-def check_location(player_id: str):
-    global game_manager
-
-    location = game_manager.get_chosen_location_by_id(player_id)
-    msg = game_manager.get_message_for_location(location)
-
-    emit("LOCATION_MSG", msg, to=request.sid)
- """
-
 @socketio.on("CHOOSE_DAY_ACTION")
 def take_action(data):
     global game_manager
     action = data["action"]
     location = data["location"]
-    #action_data = data["data"]
+    action_details = data["action_details"]
     player_id = data["player_id"]
 
     player = game_manager.players[player_id]
     # insert check here that it's actually this players turn
 
     match action:
-        # TODO - resolve actions at round end as opposed to immediately
         case "earn":
             player.add_remove_resource("coins", 2)
         case "getArmor":
             player.add_remove_resource("armor", 1)
+        case "trade":
+            to_give = action_details["resourceToGive"]
+            to_receive = action_details["resourceToReceive"] 
+            player.add_remove_resource(to_give, -1)
+            if to_receive == ResourceEnum.coins.value:
+                player.add_remove_resource(to_receive, config.COINS_FOR_RESOURCE)
+            else:
+                player.add_remove_resource(to_receive, 1)
+
 
     game_manager.add_chosen_location(player_id, location)
 

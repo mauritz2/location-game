@@ -5,6 +5,7 @@ import ArmoryActions from "./locationActions/WatchmensQuarters";
 
 function LocationDetails({location, announceLocation, onSubmit, showSubmit}: LocationDetailsProps) {
     
+    // TODO - displaySubmit is not being used - refactor
     const [displaySubmit, setDisplaySubmit] = useState<boolean>(false);
     const btn_msg = "Announce that you will visit the " + location
 
