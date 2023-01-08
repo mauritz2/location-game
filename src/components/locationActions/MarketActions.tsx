@@ -1,8 +1,8 @@
-import { match } from "assert";
 import React, { useState } from "react";
-import ResourceSelector from "./ResourceSelector";
-
-function MarketActionsForm({onSubmit, showSubmit}:MarketActionsFormProps){
+import ResourceSelector from "../ResourceSelector";
+import {LocationActionsFormProps} from "../../types"
+ 
+function MarketActions({onSubmit, showSubmit}: LocationActionsFormProps){
 
     // General state for form
     const [selectedAction, setSelectedAction] = useState<string>("");
@@ -69,15 +69,4 @@ function MarketActionsForm({onSubmit, showSubmit}:MarketActionsFormProps){
     );
 }
 
-type MarketActionsFormProps = {
-    onSubmit: (data: ActionObject) => void;
-    showSubmit: boolean;
-}
-
-type ActionObject = {
-    action: string;
-    location: string;
-    action_details: any;
-}
-
-export default MarketActionsForm;
+export default MarketActions;

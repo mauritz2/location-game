@@ -9,7 +9,7 @@ export type ResourceObjectAmts = {
 export type ActionObject = {
   action: string;
   location: string;
-  action_details: string | null;
+  action_details: any;
   player_id?: string;
 };
 
@@ -24,8 +24,8 @@ export type CurrentPlayer = {
 };
 
 export type Character = {
-  "character": string;
-  "objective": Array<string>;
-  "objectiveBonus": string;
-  "objectiveText": string;
+  character: string;
+  objective: Array<string>;
+  objectiveBonus: string;
+  objectiveText: string;
 }
