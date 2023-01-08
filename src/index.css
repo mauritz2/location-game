@@ -45,7 +45,12 @@ body {
   margin-left: 5em;
 }
 
-#gameplay-container {
+#header-grid {
+  margin-top: 2em;
+  display: grid;
+  grid-template-columns: 1fr 3fr;
+}
+#gameplay-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
 }
@@ -121,49 +126,76 @@ form div {
   margin-bottom: 1em;
 }
 
-/* Resources and character portrait */
+/* Character details */
 
-#character-details-grid {
-  display: grid;
-  grid-template-columns: 12em 15em;
-  margin-top: 2em;
+#character-details-container {
+  position: relative;
+  max-width: 10em;
 }
 
 #character-details p, ul {
   font-size: 0.8em;
 }
 
+#character-portrait {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  border-width: 3px;
+  border-style: solid;
+  border-color: var(--turquoise);
+}
+
+#char-details-toggle-btn {
+  position: absolute;
+  top: 60%;
+  left: 45%; /* this button goes off-center: TODO - fix in a nicer way */
+  font: inherit;
+  border: none;
+  cursor: pointer;
+  opacity: 80%;
+  border-radius: 5px;
+}
+
+#character-title {
+  font-weight: bold;
+  text-transform: capitalize;
+  font-size: 1.1em;
+  color: var(--turquoise);
+  text-align: left; /* This can't be perfectly centered - fix this */
+  margin-top: 0px;
+}
+
+.character-details {
+  max-height: 0px;
+  overflow: hidden;
+  transition: 0.4s; /* TODO - jumpy CSS transition here - fix */
+}
+
+.visible {
+  max-height: 200px;
+  overflow: visible;
+  transition: 0.4s;
+}
+
+
+/* Resources */
 #resource-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   text-align: center;
+  row-gap: 0em;
+
+}
+
+.resource-title{
+  font-weight: bold;
 }
 
 .resource-icon {
   display: inline;
   height: 1.5em;
   width: 1.5em;
-}
-
-#character-portrait {
-  max-width: 10em;
-  max-height: 10em;
-  display: inline;
-  border-radius: 50%;
-  border-width: 5px;
-  border-style: solid;
-  border-color: var(--turquoise);
-}
-
-#character-title {
-  font-weight: bold;
-  text-transform: capitalize;
-  font-size: 1.2em;
-  color: var(--turquoise)
-}
-
-#objective {
-  font-weight: bold;
 }
 
 /* Icons */
@@ -180,4 +212,16 @@ form div {
 
 .herbs {
   content: url("static/herbs-icon.png");
+}
+
+.coins {
+  content: url("static/coins-icon.png");
+}
+
+.scrolls {
+  content: url("static/scrolls-icon.png");
+}
+
+.bones {
+  content: url("static/bones-icon.png");
 }

@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import io from "socket.io-client";
 import * as Cookies from "../lib/cookies";
-import { ActionObject, CurrentPlayer, ResourceObjectAmts, CharacterType } from "../types";
+import { ActionObject, CurrentPlayer, ResourceObjectAmounts, CharacterType } from "../types";
 
 type RealTimeContextState = {
-  setResources: (resources: ResourceObjectAmts) => void;
-  resources: ResourceObjectAmts;
+  setResources: (resources: ResourceObjectAmounts) => void;
+  resources: ResourceObjectAmounts;
 } | null;
 
 const RealTimeContext = React.createContext<RealTimeContextState>(null);
@@ -15,7 +15,7 @@ const socket = io("localhost:5000/", {
 });
 
 export const RealTimeProvider = ({ children }: { children: JSX.Element }) => {
-  const [resources, setResources] = React.useState<ResourceObjectAmts>({
+  const [resources, setResources] = React.useState<ResourceObjectAmounts>({
     coins: 0,
     armor: 0,
     herbs: 0,

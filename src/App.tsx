@@ -14,6 +14,7 @@ import CharacterDetails from "./components/CharacterDetails";
 // Create all classes
 // Replace market with mage tower
 // Make resource names more flexible - i.e. config once ideally
+// TODO - make consistent camelCase
 
 function App() {
   const realTime = useRealTime();
@@ -29,17 +30,19 @@ function App() {
 
   return (
     <div id="overall-container">
-      <CharacterDetails
-        character={realTime.character.character}
-        objective={realTime.character.objective}
-        objectiveText={realTime.character.objectiveText}
-        objectiveBonus={realTime.character.objectiveBonus} />
-      <Resources resource_amts={realTime.resources} />
-      <h3>
-        {realTime.currentPlayer.player_name} is currently choosing what location
-        to visit this night
-      </h3>
-      <div id="gameplay-container">
+      <div id="header-grid">
+        <CharacterDetails
+          character={realTime.character.character}
+          objective={realTime.character.objective}
+          objectiveText={realTime.character.objectiveText}
+          objectiveBonus={realTime.character.objectiveBonus} />
+        <Resources resourceAmounts={realTime.resources} />
+        <h3>
+          {realTime.currentPlayer.player_name} is currently choosing what location
+          to visit this night
+        </h3>
+      </div>
+      <div id="gameplay-grid">
         <GameLog logMessages={realTime.logMessages} />
         <div id="location-container">
           <Location name={"market"} onSelect={onLocationSelect} />
@@ -52,7 +55,7 @@ function App() {
             location={locationFocus}
             announceLocation={realTime.announceLocation}
             onSubmit={realTime.onActionSubmit}
-            showSubmit={true} //realTime.showSubmit
+            showSubmit={realTime.showSubmit}
           />
         </div>
       </div>

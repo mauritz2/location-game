@@ -1,4 +1,4 @@
-export type ResourceObjectAmts = {
+export type ResourceObjectAmounts = {
   coins: number;
   armor: number;
   herbs: number;

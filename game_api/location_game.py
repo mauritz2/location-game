@@ -15,7 +15,7 @@ def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
     #players = {"148098403":"Player 1", "86601628":"Player 2"}
-    players = {"450854351":"Player 1"}
+    players = {"906568471":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
