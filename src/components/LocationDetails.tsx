@@ -2,16 +2,17 @@ import React, { useState } from "react";
 import Button from "./Button";
 import MarketActionsForm from "./MarketActionsForm";
 import ArmoryActions from "./locationActions/WatchmensQuarters";
+import GraveyardActions from "./locationActions/GraveyardActions";
 
 function LocationDetails({location, announceLocation, onSubmit, showSubmit}: LocationDetailsProps) {
-    
+    // TODO - consider re-naming components - e.g. to columns, locationCol.
     // TODO - displaySubmit is not being used - refactor
     const [displaySubmit, setDisplaySubmit] = useState<boolean>(false);
     const btn_msg = "Announce that you will visit the " + location
 
     return(
         <>
-            <h3 id="location-context-header">{location} details</h3>
+            <h3 id="location-context-header">The {location}</h3>
             <Button
                 text={btn_msg} 
                 btnClass={"btn bg-turquoise"}
@@ -23,6 +24,10 @@ function LocationDetails({location, announceLocation, onSubmit, showSubmit}: Loc
                     showSubmit={showSubmit}/> : ""}
             {location == "watchmens-quarters" ?
                 <ArmoryActions
+                    onSubmit={onSubmit}
+                    showSubmit={showSubmit}/> : ""}
+            {location == "graveyard" ?
+                <GraveyardActions
                     onSubmit={onSubmit}
                     showSubmit={showSubmit}/> : ""}
         </>

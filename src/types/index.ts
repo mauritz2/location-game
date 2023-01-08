@@ -13,6 +13,11 @@ export type ActionObject = {
   player_id?: string;
 };
 
+export type LocationActionsFormProps = {
+  onSubmit: (data: ActionObject) => void;
+  showSubmit: boolean;
+}
+
 export type CurrentPlayer = {
   player_name: string;
   player_id: string;
