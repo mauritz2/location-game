@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Button from "./Button";
-import MarketActions from "./locationActions/MarketActions";
+import MarketActionsForm from "./locationActions/MarketActions";
 import ArmoryActions from "./locationActions/WatchmensQuarters";
 import GraveyardActions from "./locationActions/GraveyardActions";
 
@@ -19,7 +19,7 @@ function LocationDetails({location, announceLocation, onSubmit, showSubmit}: Loc
                 onClick={() => {announceLocation(location)}}/> 
             <h4>Actions</h4>
             {location == "market" ?
-                <MarketActions
+                <MarketActionsForm
                     onSubmit={onSubmit}
                     showSubmit={showSubmit}/> : ""}
             {location == "watchmens-quarters" ?

@@ -23,7 +23,7 @@ export type CurrentPlayer = {
   player_id: string;
 };
 
-export type Character = {
+export type CharacterType = {
   character: string;
   objective: Array<string>;
   objectiveBonus: string;

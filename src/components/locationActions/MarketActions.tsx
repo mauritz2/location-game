@@ -29,7 +29,6 @@ function MarketActions({onSubmit, showSubmit}: LocationActionsFormProps){
                 data["action_details"] = tradeData
         }
 
-
         
         onSubmit(data);
     }

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import Highwayman from "./../static/highwayman.png"; 
 import Toxicologist from "./../static/toxicologist.png"; 
-import { Character } from "../types";
+import { CharacterType } from "../types";
 
-function CharacterDetails({characterName, objective, objectiveText, objectiveBonus}: CharacterDetailsProps) {
+function CharacterDetails({character, objective, objectiveText, objectiveBonus}: CharacterType) {
     
     let image = "";
-    switch(characterName){
+    switch(character){
         case "highwayman":
             image = Highwayman;
             break;
@@ -24,24 +24,19 @@ function CharacterDetails({characterName, objective, objectiveText, objectiveBon
     const bonuses = objectiveBonus.split("&&")
 
     return(
-        <div>
+        <div id="character-details-grid">
             <img id="character-portrait" src={image}></img>
-            <p id="character-title">{characterName}</p>
-            <p><strong>Objective: </strong>{objectiveText}: {objective_jsx}</p>            
-            <p><strong>Bonus: </strong></p>
-                <ul>
-                    <li>{bonuses[0]}</li>            
-                    <li>{bonuses[1]}</li>            
-                </ul>
+            <div id="character-details">
+                <p id="character-title">{character}</p>
+                <p><strong>Objective: </strong>{objectiveText}: {objective_jsx}</p>            
+                <p><strong>Bonus: </strong></p>
+                    <ul>
+                        <li>{bonuses[0]}</li>            
+                        <li>{bonuses[1]}</li>            
+                    </ul>
+            </div>
         </div>
     );
-}
-
-type CharacterDetailsProps = {
-    characterName: string;
-    objective: Array<string>;
-    objectiveText: string;
-    objectiveBonus: string;
 }
 
 export default CharacterDetails;

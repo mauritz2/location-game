@@ -30,7 +30,7 @@ function App() {
   return (
     <div id="overall-container">
       <CharacterDetails
-        characterName={realTime.character.character}
+        character={realTime.character.character}
         objective={realTime.character.objective}
         objectiveText={realTime.character.objectiveText}
         objectiveBonus={realTime.character.objectiveBonus} />

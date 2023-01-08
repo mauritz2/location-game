@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import io from "socket.io-client";
 import * as Cookies from "../lib/cookies";
-import { ActionObject, CurrentPlayer, ResourceObjectAmts, Character } from "../types";
+import { ActionObject, CurrentPlayer, ResourceObjectAmts, CharacterType } from "../types";
 
 type RealTimeContextState = {
   setResources: (resources: ResourceObjectAmts) => void;
@@ -40,7 +40,7 @@ export const useRealTime = () => {
   const [logMessages, setLogMessages] = useState<Array<string>>([]);
   const [showSubmit, setShowSubmit] = useState<boolean>(false);
   const [currentPhase, setCurrentPhase] = useState<string>("");
-  const [character, setCharacter] = useState<Character>({
+  const [character, setCharacter] = useState<CharacterType>({
     "character": "",
     "objective": [""],
     "objectiveText": "",

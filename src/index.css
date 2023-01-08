@@ -123,6 +123,16 @@ form div {
 
 /* Resources and character portrait */
 
+#character-details-grid {
+  display: grid;
+  grid-template-columns: 12em 15em;
+  margin-top: 2em;
+}
+
+#character-details p, ul {
+  font-size: 0.8em;
+}
+
 #resource-grid {
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
@@ -148,6 +158,8 @@ form div {
 #character-title {
   font-weight: bold;
   text-transform: capitalize;
+  font-size: 1.2em;
+  color: var(--turquoise)
 }
 
 #objective {
