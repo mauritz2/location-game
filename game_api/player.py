@@ -1,6 +1,21 @@
 from character import Character, Characters
 from enum import Enum
 
+# TODO - rename Enums to this standard to clarify they're Enums
+class ResourceEnum(Enum):
+    coins = "coins"
+    armor = "armor"
+    herbs = "herbs"
+    scrolls = "scrolls"
+    bones = "bones"
+
+
+class PlayerConditionsEnum(Enum):
+    scrying = "scrying"
+    invisible = "invisible"
+    reported = "reported"
+    reporting = "reporting"
+
 class Player(Character):
 
     def __init__(self, player_id: str, player_name: str, character: Characters) -> None:
@@ -13,7 +28,8 @@ class Player(Character):
         self.scrolls = 0
         self.bones = 0
         # TODO - Review this. We inherit from Character, but also instantiate it here.
-        self.character = Character(character) 
+        self.character = Character(character)
+        self.conditions = []
 
     def add_remove_resource(self, resource, amount: int) -> None:
         """
@@ -35,6 +51,21 @@ class Player(Character):
                 raise ValueError(f"Resource {resource} does not exist!")
 
 
+    def add_condition(self, condition:PlayerConditionsEnum):
+        """
+        Adds a condition to the player (e.g. scrying, invisible)
+        that grants special effects at round resolution
+        """
+
+        valid_conditions = [condition.value for condition in PlayerConditionsEnum]
+        if condition not in valid_conditions:
+            raise ValueError(f"Condition {condition} is not in list of valid conditions {valid_conditions}")
+        self.conditions.append(condition)
+
+    def clear_conditions(self):
+        self.conditions = []
+
+
     def get_resources(self):
         data = {
             ResourceEnum.coins.value: self.coins,
@@ -46,10 +77,3 @@ class Player(Character):
 
         return data
 
-# TODO - rename Enums to this standard to clarify they're Enums
-class ResourceEnum(Enum):
-    coins = "coins"
-    armor = "armor"
-    herbs = "herbs"
-    scrolls = "scrolls"
-    bones = "bones"

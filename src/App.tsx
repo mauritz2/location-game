@@ -15,6 +15,8 @@ import CharacterDetails from "./components/CharacterDetails";
 // Replace market with mage tower
 // Make resource names more flexible - i.e. config once ideally
 // TODO - make consistent camelCase
+// TODO - fix bug where players get the wrong location messages (seems related to game setup)
+// TODO - fix UI so that resources and actions are visible at the same time
 
 function App() {
   const realTime = useRealTime();

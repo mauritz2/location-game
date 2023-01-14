@@ -73,7 +73,31 @@ class GameManager():
             chosen_loc = self.get_chosen_location_by_id(player_id)
             msg = self.get_message_for_location(chosen_loc)
             self.add_msg_to_log(msg=msg, player_id=player_id)
+
+        # SCRYING
+        for player_id in self.players.keys():
+            if "scrying" in self.players[player_id].conditions:
+                scrying_msg = self.get_scrying_message()
+                self.add_msg_to_log(msg="Because of your scrying power you see:", player_id=player_id)
+                self.add_msg_to_log(msg=scrying_msg, player_id=player_id)
+
+        # Reset chosen locations ahead of next round
         self.selected_locations = {}
+
+
+    def get_scrying_message(self) -> str:
+        """
+        Gets the scrying message obtainable from the library which reveals the position
+        of all players
+        """
+        msg = []
+        for location, player_ids in self.selected_locations.items():
+            player_names = [self.players[player_id].player_name for player_id in player_ids]
+            loc_msg = f"{location.capitalize()}: {' '.join(player_names)}"
+            msg.append(loc_msg)
+        
+        return " ".join(msg)
+
 
     def get_chosen_location_by_id(self, player_id: str) -> str:
         # TODO - create Enum for locations
@@ -115,6 +139,7 @@ class GameManager():
         """
         msgs = [msg.message for msg in self.game_log if msg.player_id == player_id or msg.player_id == "ALL"]
         return msgs
+
 
     def add_msg_to_log(self, msg:str, player_id:int = "ALL") -> None:
         # TODO - continue here - need to think about how to fix the changing msg bug
