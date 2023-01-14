@@ -10,6 +10,7 @@ class GameManager():
     This is the only code that should be exposed in the Game API routes.
 
     TODO - think about how to improve cohesion in this class - it's very low. Maybe one class to manage players, one to manage turns?
+    TODO - break out a GameLog class from GameManager
     """
 
     def __init__(self, players: list[Player]):
@@ -20,9 +21,6 @@ class GameManager():
         self.players_waiting_for_turn = list(self.players.keys())
         self.game_phase = GamePhases.Day
         self.game_log = []
-        #message: str
-        #player_id: int
-        #time_log: self.
         self.selected_locations = {}
 
     @staticmethod
@@ -78,7 +76,6 @@ class GameManager():
         for player_id in self.players.keys():
             if "scrying" in self.players[player_id].conditions:
                 scrying_msg = self.get_scrying_message()
-                self.add_msg_to_log(msg="Because of your scrying power you see:", player_id=player_id)
                 self.add_msg_to_log(msg=scrying_msg, player_id=player_id)
 
         # Reset chosen locations ahead of next round
@@ -90,7 +87,7 @@ class GameManager():
         Gets the scrying message obtainable from the library which reveals the position
         of all players
         """
-        msg = []
+        msg = ["You use your scrying powers to see:"]
         for location, player_ids in self.selected_locations.items():
             player_names = [self.players[player_id].player_name for player_id in player_ids]
             loc_msg = f"{location.capitalize()}: {' '.join(player_names)}"
@@ -145,6 +142,7 @@ class GameManager():
         # TODO - continue here - need to think about how to fix the changing msg bug
         msg_entry = LogMessage(message=msg, player_id=player_id, timestamp=datetime.datetime.utcnow())
         self.game_log.append(msg_entry)
+
 
 class GamePhases(Enum):
     """

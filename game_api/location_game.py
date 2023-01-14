@@ -96,9 +96,14 @@ def announce_location(data):
     location = data["location"]
 
     msg = f"{player_name} is announcing that they will visit the {location} this night."            
-    game_manager.add_msg_to_log(msg, player_id)
+    game_manager.add_msg_to_log(msg=msg, player_id="ALL")
 
     game_state = game_manager.get_game_state()
+
+    print("\n\n")
+    print(game_manager.game_log)
+    print("\n\n")
+
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
     
 

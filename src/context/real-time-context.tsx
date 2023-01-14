@@ -93,14 +93,16 @@ export const useRealTime = () => {
       setCurrentPlayer(current_player);
       setCurrentPhase(gameState["game_phase"]);
 
-      if (current_player.player_id == Cookies.getUUIDFromCookie()) {
+      let player_id = Cookies.getUUIDFromCookie()
+
+      if (current_player.player_id == player_id) {
         setShowSubmit(true);
       } else {
         setShowSubmit(false);
       }
 
-      // Ask for the your log messages 
-      socket.emit("GET_LOG_MESSAGES", current_player.player_id);
+      // Ask for your log messages 
+      socket.emit("GET_LOG_MESSAGES", player_id);
 
 
     });
