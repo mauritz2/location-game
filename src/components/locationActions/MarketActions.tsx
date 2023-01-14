@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import ResourceSelector from "../ResourceSelector";
-import {LocationActionsFormProps} from "../../types"
+import {LocationActionsFormProps} from "../../types";
  
 function MarketActions({onSubmit, showSubmit}: LocationActionsFormProps){
 

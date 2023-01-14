@@ -15,7 +15,7 @@ def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
     #players = {"148098403":"Player 1", "86601628":"Player 2"}
-    players = {"906568471":"Player 1"}
+    players = {"280609844":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
@@ -51,6 +51,8 @@ def take_action(data):
             player.add_remove_resource(ResourceEnum.bones.value, 1)
         case "getHerbs":
             player.add_remove_resource(ResourceEnum.herbs.value, 1)
+        case "getScroll":
+            player.add_remove_resource(ResourceEnum.scrolls.value, 1)
         case "trade":
             to_give = action_details["resourceToGive"]
             to_receive = action_details["resourceToReceive"] 

@@ -3,6 +3,7 @@ import Button from "./Button";
 import MarketActionsForm from "./locationActions/MarketActions";
 import ArmoryActions from "./locationActions/WatchmensQuarters";
 import GraveyardActions from "./locationActions/GraveyardActions";
+import LibraryActions from "./locationActions/LibraryActions";
 
 function LocationDetails({location, announceLocation, onSubmit, showSubmit}: LocationDetailsProps) {
     // TODO - consider re-naming components - e.g. to columns, locationCol.
@@ -16,7 +17,8 @@ function LocationDetails({location, announceLocation, onSubmit, showSubmit}: Loc
             <Button
                 text={btn_msg} 
                 btnClass={"btn bg-turquoise"}
-                onClick={() => {announceLocation(location)}}/> 
+                onClick={() => {announceLocation(location)}}/>
+
             <h4>Actions</h4>
             {location == "market" ?
                 <MarketActionsForm
@@ -28,6 +30,10 @@ function LocationDetails({location, announceLocation, onSubmit, showSubmit}: Loc
                     showSubmit={showSubmit}/> : ""}
             {location == "graveyard" ?
                 <GraveyardActions
+                    onSubmit={onSubmit}
+                    showSubmit={showSubmit}/> : ""}
+            {location == "library" ?
+                <LibraryActions
                     onSubmit={onSubmit}
                     showSubmit={showSubmit}/> : ""}
         </>
