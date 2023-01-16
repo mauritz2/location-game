@@ -29,3 +29,7 @@ export type CharacterType = {
   objectiveBonus: string;
   objectiveText: string;
 }
+
+export type Characters = {
+  easing: "ease-in" | "ease-out" | "ease-in-out";
+}

@@ -16,6 +16,7 @@ class PlayerConditionsEnum(Enum):
     reported = "reported"
     reporting = "reporting"
 
+
 class Player(Character):
 
     def __init__(self, player_id: str, player_name: str, character: Characters) -> None:
@@ -30,6 +31,7 @@ class Player(Character):
         # TODO - Review this. We inherit from Character, but also instantiate it here.
         self.character = Character(character)
         self.conditions = []
+        
 
     def add_remove_resource(self, resource, amount: int) -> None:
         """
@@ -61,6 +63,7 @@ class Player(Character):
         if condition not in valid_conditions:
             raise ValueError(f"Condition {condition} is not in list of valid conditions {valid_conditions}")
         self.conditions.append(condition)
+
 
     def clear_conditions(self):
         self.conditions = []

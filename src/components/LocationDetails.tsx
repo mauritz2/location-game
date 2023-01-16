@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Button from "./Button";
 import MarketActionsForm from "./locationActions/MarketActions";
-import ArmoryActions from "./locationActions/WatchmensQuarters";
+import WatchmensQuartersActions from "./locationActions/WatchmensQuartersActions";
 import GraveyardActions from "./locationActions/GraveyardActions";
 import LibraryActions from "./locationActions/LibraryActions";
 
@@ -25,7 +25,7 @@ function LocationDetails({location, announceLocation, onSubmit, showSubmit}: Loc
                     onSubmit={onSubmit}
                     showSubmit={showSubmit}/> : ""}
             {location == "watchmens-quarters" ?
-                <ArmoryActions
+                <WatchmensQuartersActions
                     onSubmit={onSubmit}
                     showSubmit={showSubmit}/> : ""}
             {location == "graveyard" ?

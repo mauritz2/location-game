@@ -3,6 +3,21 @@ from enum import Enum
 from dataclasses import dataclass
 from player import Player
 
+class LocationsEnum(Enum):
+    market = "market"
+    library = "library"
+    watchmensquarter = "watchmen's quarter"
+    graveyard = "graveyard"
+
+class GamePhases(Enum):
+    """
+    Enum for potential game phases. Game phases are states where the game
+    awaits user input.
+    Enum values are written in format: "{player} is currently {text_value}"
+    """
+    Day = "choosing location"
+    Night = "choosing whether to attack"
+
 class GameManager():
     """
     Handles all incoming user actions from the front-end. Evaluates
@@ -22,6 +37,8 @@ class GameManager():
         self.game_phase = GamePhases.Day
         self.game_log = []
         self.selected_locations = {}
+        self.blocked_locations = {}
+        
 
     @staticmethod
     def create_player_dict(players: list[Player]) -> dict[str, Player]:
@@ -63,12 +80,18 @@ class GameManager():
         self.game_phase = GamePhases.Night
         self.players_waiting_for_turn = list(self.players.keys())
         self.current_player = self.players[self.players_waiting_for_turn[0]]
+        
         # Resolve user locations - players should be notified 
         # in the game log if they are alone or someone else is at their location
         # TODO - this could be refactored so that each player instance holds the location they've chosen
         # for that round. That would remove the get_chosen_location_by_id() func. 
         for player_id in self.players.keys():
             chosen_loc = self.get_chosen_location_by_id(player_id)
+            
+            if chosen_loc in self.blocked_locations.keys():
+                # TODO - update with gold loss logic here
+                print("\n\nYou're visiting a location blocked by someone else \n\n")
+                       
             msg = self.get_message_for_location(chosen_loc)
             self.add_msg_to_log(msg=msg, player_id=player_id)
 
@@ -78,8 +101,11 @@ class GameManager():
                 scrying_msg = self.get_scrying_message()
                 self.add_msg_to_log(msg=scrying_msg, player_id=player_id)
 
-        # Reset chosen locations ahead of next round
+        # Reset ahead of next round
         self.selected_locations = {}
+        self.blocked_locations = {}
+        for player in self.players.values():
+            player.clear_conditions()
 
 
     def get_scrying_message(self) -> str:
@@ -143,15 +169,17 @@ class GameManager():
         msg_entry = LogMessage(message=msg, player_id=player_id, timestamp=datetime.datetime.utcnow())
         self.game_log.append(msg_entry)
 
+    def block_location(self, blocker_id:int, location:LocationsEnum):
+        if blocker_id not in self.players.keys():
+            raise ValueError(f"{blocker_id} is not a valid player ID")
 
-class GamePhases(Enum):
-    """
-    Enum for potential game phases. Game phases are states where the game
-    awaits user input.
-    Enum values are written in format: "{player} is currently {text_value}"
-    """
-    Day = "choosing location"
-    Night = "choosing whether to attack"
+        if location not in self.blocked_locations.keys(): 
+            self.blocked_locations[location] = blocker_id  
+        else:
+            # Location already reported - adding new reporter ID 
+            self.blocked_locations[location].append(blocker_id) 
+
+        print(self.blocked_locations[location])
 
 
 @dataclass

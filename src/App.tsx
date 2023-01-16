@@ -17,6 +17,8 @@ import CharacterDetails from "./components/CharacterDetails";
 // TODO - make consistent camelCase
 // TODO - fix bug where players get the wrong location messages (seems related to game setup)
 // TODO - fix UI so that resources and actions are visible at the same time
+// TODO - should there be a location to "switch" your character? Or when you are reported - should you get a new char?
+
 
 function App() {
   const realTime = useRealTime();
