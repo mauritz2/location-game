@@ -81,25 +81,32 @@ class GameManager():
         self.players_waiting_for_turn = list(self.players.keys())
         self.current_player = self.players[self.players_waiting_for_turn[0]]
         
-        # Resolve user locations - players should be notified 
-        # in the game log if they are alone or someone else is at their location
-        # TODO - this could be refactored so that each player instance holds the location they've chosen
-        # for that round. That would remove the get_chosen_location_by_id() func. 
+        # Populate log messages showing amount of people at each location 
         for player_id in self.players.keys():
-            chosen_loc = self.get_chosen_location_by_id(player_id)
-            
-            if chosen_loc in self.blocked_locations.keys():
-                # TODO - update with gold loss logic here
-                print("\n\nYou're visiting a location blocked by someone else \n\n")
-                       
+            # Resolve user locations - players should be notified 
+            # in the game log if they are alone or someone else is at their location
+            # TODO - this could be refactored so that each player instance holds the location they've chosen
+            # for that round. That would remove the get_chosen_location_by_id() func. 
+            chosen_loc = self.get_chosen_location_by_id(player_id)      
             msg = self.get_message_for_location(chosen_loc)
             self.add_msg_to_log(msg=msg, player_id=player_id)
 
-        # SCRYING
+        # Add extra scrying message, if player has visited the library
         for player_id in self.players.keys():
             if "scrying" in self.players[player_id].conditions:
                 scrying_msg = self.get_scrying_message()
                 self.add_msg_to_log(msg=scrying_msg, player_id=player_id)
+
+        # Execute queued action (unless at a blocked location)
+        # TODO - refactor to reduce amount of loops here
+        for player_id in self.players.keys():
+            chosen_loc = self.get_chosen_location_by_id(player_id)      
+            if chosen_loc not in self.blocked_locations.keys():
+                self.players[player_id].execute_queued_action()
+            else: 
+                print("\n\nYou're visiting a location blocked by someone else \n\n")
+                # TODO - update with gold loss logic here
+
 
         # Reset ahead of next round
         self.selected_locations = {}

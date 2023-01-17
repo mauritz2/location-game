@@ -1,3 +1,4 @@
+import game_balance_config as config
 from character import Character, Characters
 from enum import Enum
 
@@ -31,6 +32,7 @@ class Player(Character):
         # TODO - Review this. We inherit from Character, but also instantiate it here.
         self.character = Character(character)
         self.conditions = []
+        self.queued_action = {}
         
 
     def add_remove_resource(self, resource, amount: int) -> None:
@@ -68,6 +70,40 @@ class Player(Character):
     def clear_conditions(self):
         self.conditions = []
 
+    def queue_action(self, queued_action_data:dict):
+        self.queued_action = queued_action_data
+
+
+    def execute_queued_action(self):
+        action = self.queued_action["action"]
+        action_details = self.queued_action["action_details"]
+
+        match action:
+            case "earn":
+                self.add_remove_resource(ResourceEnum.coins.value, 2)
+            case "getArmor":
+                self.add_remove_resource(ResourceEnum.armor.value, 1)
+            case "getBones":
+                self.add_remove_resource(ResourceEnum.bones.value, 1)
+            case "getHerbs":
+                self.add_remove_resource(ResourceEnum.herbs.value, 1)
+            case "getScroll":
+                self.add_remove_resource(ResourceEnum.scrolls.value, 1)
+            case "scry":
+                self.add_remove_resource(ResourceEnum.coins.value, -2)            
+                self.add_condition(PlayerConditionsEnum.scrying.value)
+            case "blockLocation":
+                blockedLocation = action_details["blockedLocation"]
+                game_manager.block_location(blocker_id=player_id, location=blockedLocation)
+            case "trade":
+                to_give = action_details["resourceToGive"]
+                to_receive = action_details["resourceToReceive"] 
+                self.add_remove_resource(to_give, -1)
+                if to_receive == ResourceEnum.coins.value:
+                    self.add_remove_resource(to_receive, config.COINS_FOR_RESOURCE)
+                else:
+                    self.add_remove_resource(to_receive, 1)
+        
 
     def get_resources(self):
         data = {

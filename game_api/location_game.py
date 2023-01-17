@@ -2,7 +2,7 @@ from flask import Flask, request
 from create_game import create_game
 from flask_socketio import SocketIO, emit 
 from player import ResourceEnum, PlayerConditionsEnum
-import game_balance_config as config
+#import game_balance_config as config
 
 global game_manager
 
@@ -14,7 +14,7 @@ socketio.init_app(app, cors_allowed_origins="*")
 def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
-    players = {"371345342":"Player 1", "70711706":"Player 2"}
+    players = {"591585879":"Player 1", "455776297":"Player 2"}
     #players = {"280609844":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
@@ -42,10 +42,9 @@ def take_action(data):
     player = game_manager.players[player_id]
     # insert check here that it's actually this players turn
 
-    print("\n\n")
-    print(action_details)
-    print("\n\n")
+    player.queue_action(data)
 
+    """     
     match action:
         case "earn":
             player.add_remove_resource(ResourceEnum.coins.value, 2)
@@ -71,17 +70,23 @@ def take_action(data):
                 player.add_remove_resource(to_receive, config.COINS_FOR_RESOURCE)
             else:
                 player.add_remove_resource(to_receive, 1)
-
+     """
+    # TODO - re-visit this - weird that we check action here and also in execute_queued_action()
+    if action == "blockLocation":
+        blockedLocation = action_details["blockedLocation"]
+        game_manager.block_location(blocker_id=player_id, location=blockedLocation)
 
     game_manager.add_chosen_location(player_id, location)
-
-    resources = player.get_resources()
-    emit("UPDATE_RESOURCES", resources, to=request.sid)
 
     game_manager.end_player_turn()
 
     if game_manager.is_new_round():
         emit("DAY_OVER", broadcast=True)
+
+    # TODO - continue here - there's an issue where only the last person would get updated resources
+    # need to fix by putting in a REQUEST_UPDATE_RESOURCE emit on client side (?)
+    resources = player.get_resources()
+    emit("UPDATE_RESOURCES", resources, to=request.sid)
 
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)

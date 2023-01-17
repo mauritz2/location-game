@@ -101,7 +101,9 @@ export const useRealTime = () => {
         setShowSubmit(false);
       }
 
-      // Ask for your log messages 
+      // Ask for your log messages and resources
+      // TODO - standardize event naming (GET_EVENT vs GET EVENT)
+      socket.emit("GET_LOG_MESSAGES", player_id);
       socket.emit("GET_LOG_MESSAGES", player_id);
 
 
