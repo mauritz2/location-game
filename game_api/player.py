@@ -70,6 +70,7 @@ class Player(Character):
     def clear_conditions(self):
         self.conditions = []
 
+
     def queue_action(self, queued_action_data:dict):
         self.queued_action = queued_action_data
 
@@ -92,9 +93,6 @@ class Player(Character):
             case "scry":
                 self.add_remove_resource(ResourceEnum.coins.value, -2)            
                 self.add_condition(PlayerConditionsEnum.scrying.value)
-            case "blockLocation":
-                blockedLocation = action_details["blockedLocation"]
-                game_manager.block_location(blocker_id=player_id, location=blockedLocation)
             case "trade":
                 to_give = action_details["resourceToGive"]
                 to_receive = action_details["resourceToReceive"] 

@@ -14,7 +14,7 @@ socketio.init_app(app, cors_allowed_origins="*")
 def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
-    players = {"591585879":"Player 1", "455776297":"Player 2"}
+    players = {"548388098":"Player 1", "705341267":"Player 2"}
     #players = {"280609844":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()
@@ -85,8 +85,8 @@ def take_action(data):
 
     # TODO - continue here - there's an issue where only the last person would get updated resources
     # need to fix by putting in a REQUEST_UPDATE_RESOURCE emit on client side (?)
-    resources = player.get_resources()
-    emit("UPDATE_RESOURCES", resources, to=request.sid)
+    #resources = player.get_resources()
+    #emit("UPDATE_RESOURCES", resources, to=request.sid)
 
     game_state = game_manager.get_game_state()
     emit("UPDATE_GAME_STATE", game_state, broadcast=True)
@@ -98,6 +98,13 @@ def get_log_messages(player_id):
     msgs = game_manager.get_available_msgs(player_id)
     emit("UPDATE_LOG_MSGS", msgs, to=request.sid)
 
+
+@socketio.on("GET_RESOURCES")
+def get_resources(player_id):
+    global game_manager
+    player = game_manager.players[player_id]
+    resources = player.get_resources()
+    emit("UPDATE_RESOURCES", resources, to=request.sid)
 
 @socketio.on("ANNOUNCE_LOCATION")
 def announce_location(data):
