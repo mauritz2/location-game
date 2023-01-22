@@ -18,7 +18,7 @@ export type LocationActionsFormProps = {
   showSubmit: boolean;
 }
 
-export type CurrentPlayer = {
+export type CurrentPlayerType = {
   player_name: string;
   player_id: string;
 };
@@ -30,6 +30,8 @@ export type CharacterType = {
   objectiveText: string;
 }
 
-export type Characters = {
+/* export type Characters = {
   easing: "ease-in" | "ease-out" | "ease-in-out";
-}
+} */
+
+

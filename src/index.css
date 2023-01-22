@@ -290,3 +290,45 @@ form div {
   line-height: 1.8em;
 }
 
+/* Player order status */
+
+.chevron {
+  background: var(--grey);
+  display: inline-block;
+  height: 3em;
+  margin-right: 55px;
+  position: relative;
+  width: 8em;
+  text-align: center;
+}
+
+.chevron::before {
+  border-bottom: 2em solid var(--grey);
+  border-left: 2em solid transparent;
+  border-right: 2em solid transparent;
+  content: "";
+  height: 0;
+  left: 7em;
+  position: absolute;
+  top: 0.5em;
+  width: 0;
+  rotate: 90deg;
+}
+
+.active {
+  background: var(--turquoise);
+}
+
+/* TODO - refactor to avoid repetition between active and chevron */
+.active::before {
+  border-bottom: 2em solid var(--turquoise);
+  border-left: 2em solid transparent;
+  border-right: 2em solid transparent;
+  content: "";
+  height: 0;
+  left: 7em;
+  position: absolute;
+  top: 0.5em;
+  width: 0;
+  rotate: 90deg;
+}

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import io from "socket.io-client";
 import * as Cookies from "../lib/cookies";
-import { ActionObject, CurrentPlayer, ResourceObjectAmounts, CharacterType } from "../types";
+import { ActionObject, CurrentPlayerType, ResourceObjectAmounts, CharacterType} from "../types";
 
 type RealTimeContextState = {
   setResources: (resources: ResourceObjectAmounts) => void;
@@ -49,10 +49,12 @@ export const useRealTime = () => {
 
   const player_id = Cookies.getUUIDFromCookie();
 
-  const [currentPlayer, setCurrentPlayer] = useState<CurrentPlayer>({
+  const [currentPlayer, setCurrentPlayer] = useState<CurrentPlayerType>({
     player_name: "",
     player_id: "",
   });
+
+  const [playerNames, setPlayerNames] = useState<Array<string>>([]);
 
   React.useEffect(() => {
     /* SOCKET LISTENERS */
@@ -90,9 +92,11 @@ export const useRealTime = () => {
         player_id: gameState["current_player_id"],
       };
 
+
+      setPlayerNames(gameState.players);
       setCurrentPlayer(current_player);
       setCurrentPhase(gameState["game_phase"]);
-
+      
       let player_id = Cookies.getUUIDFromCookie()
 
       if (current_player.player_id == player_id) {
@@ -121,6 +125,7 @@ export const useRealTime = () => {
   return {
     currentPhase,
     currentPlayer,
+    playerNames,
     showSubmit,
     logMessages,
     character,

@@ -154,7 +154,7 @@ class GameManager():
         Return a serializable game state object for the front-end to render
         """
         game_state = {
-            "players": list(self.players.keys()),
+            "players": [player.player_name for player in self.players.values()],
             "current_player_name": self.current_player.player_name,
             "current_player_id": self.current_player.player_id,
             "game_phase": self.game_phase.value,

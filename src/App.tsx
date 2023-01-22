@@ -6,6 +6,7 @@ import LocationDetails from "./components/LocationDetails";
 import Resources from "./components/Resources";
 import { useRealTime } from "./context/real-time-context";
 import CharacterDetails from "./components/CharacterDetails";
+import PlayerOrderStatus from "./components/PlayerOrderStatus";
 
 
 // Project TODO
@@ -42,10 +43,7 @@ function App() {
           objectiveText={realTime.character.objectiveText}
           objectiveBonus={realTime.character.objectiveBonus} />
         <Resources resourceAmounts={realTime.resources} />
-        <h3>
-          {realTime.currentPlayer.player_name} is currently choosing what location
-          to visit this night
-        </h3>
+        <PlayerOrderStatus playerNames={realTime.playerNames} currentPlayer={realTime.currentPlayer} />
       </div>
       <div id="gameplay-grid">
         <GameLog logMessages={realTime.logMessages} />
