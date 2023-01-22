@@ -1,7 +1,6 @@
 import React from "react";
 
 import GameLog from "./components/GameLog";
-import Location from "./components/Location";
 import LocationSelect from "./components/LocationSelect";
 import LocationDetails from "./components/LocationDetails";
 import Resources from "./components/Resources";

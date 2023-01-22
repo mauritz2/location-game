@@ -1,23 +1,6 @@
 import React from "react";
 
 function LocationSelect({onSelect}: LocationSelectProps){
-
-    // TODO - refactor this approach it's repetitive
-/*     let market = document.getElementById("market")!
-    let library = document.getElementById("library")
-    let watchmensquarters = document.getElementById("watchmensquarters")
-    let graveyard = document.getElementById("graveyard")
-
-    if (market === null){
-        console.log("I'm null!")
-    }
-    else {
-        market.onclick() = hey(market.value)
-    }
-
-    function hey() {
-        console.log("AA")
-    } */
     
     return(
     <div className="location-select-grid">

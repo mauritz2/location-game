@@ -80,7 +80,7 @@ body {
 
 /* Location CSS */
 
-#location-container {
+/* #location-container {
   display: subgrid;
   grid-template-columns: 1fr 1fr;
 }
@@ -115,8 +115,28 @@ body {
   opacity: 90%;
   background-color: var(--white);
 }
+ */
+/* 
+ .location-image {
+  background-image: url("static/graveyard.png");
+  padding: 2em;
+  background-size: contain;
+  background-repeat: no-repeat;
+ } */
 
-/* Location context */
+ #location-details-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  margin-top: 1em;
+  gap: 1em;
+ }
+
+.location-img {
+  max-width: 20em;
+  max-height: 25em;
+}
+
+ /* Location context */
 
 #location-container {
   margin-left: 5em;
