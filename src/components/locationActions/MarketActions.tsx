@@ -26,7 +26,7 @@ function MarketActions({onSubmit, showSubmit}: LocationActionsFormProps){
                     "resourceToGive": resourceToGive,
                     "resourceToReceive": resourceToReceive
                 } 
-                data["action_details"] = tradeData
+                data["action_details"] = tradeData;
         }
 
         
@@ -46,11 +46,11 @@ function MarketActions({onSubmit, showSubmit}: LocationActionsFormProps){
         <form onSubmit={(e) => {handleSubmit(e); e.preventDefault();}}>
             <div>
                 <input type="radio" id="earn" name="action" value="earn" onChange={event => setSelectedAction(event.target.value)}/>
-                <label htmlFor="earn">Earn 2 coins</label>
+                <label htmlFor="earn"><strong> Earn: </strong>Obtain 2 coins</label>
             </div>
             <div>
                 <input type="radio" id="trade" name="action" value="trade" onChange={event => setSelectedAction(event.target.value)} />
-                <label htmlFor="trade">Trade one resource for any other resource or 4 coins</label>
+                <label htmlFor="trade"><strong> Trade: </strong>Trade one resource for any other resource or 4 coins</label>
             </div>
             {selectedAction == "trade" ?
                 <>
@@ -61,9 +61,8 @@ function MarketActions({onSubmit, showSubmit}: LocationActionsFormProps){
                 </>
                 : ""}
 
-            <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm action"/>
+            <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm visit"/>
         </form>
-        <p>Location bonus (if 2+ visits): <i>Earn 2 additional coins</i></p>
         </>
     );
 }

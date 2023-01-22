@@ -20,15 +20,14 @@ function LibraryActions({onSubmit, showSubmit}: LocationActionsFormProps){
         <form onSubmit={(e) => {handleSubmit(e); e.preventDefault();}}>
             <div>
                 <input type="radio" id="getScroll" name="action" value="getScroll" onChange={event => setSelectedAction(event.target.value)}/>
-                <label htmlFor="getScroll">Obtain a scroll</label>
+                <label htmlFor="getScroll"><strong> Study: </strong>Obtain a scroll</label>
             </div>
             <div>
                 <input type="radio" id="scry" name="action" value="scry" onChange={event => setSelectedAction(event.target.value)} />
-                <label htmlFor="scry">Pay 2 gold. Learn the location of all other players this round and whether they have reached their objective</label>
+                <label htmlFor="scry"><strong> Scry: </strong>Pay 2 gold. Learn the location of all other players this round and whether they have reached their objective</label>
             </div>
-            <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm action"/>
+            <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm visit"/>
         </form>
-        <p>Location bonus (if 2+ visits): <i>Next round, the people that visited the sorcerer this turn will be invisible. Players in the same location as an invisible player won’t be informed that any other players are there. They therefore can’t be interrogated, arrested or engaged in combat.</i></p>
         </>
     );
 }

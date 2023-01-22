@@ -14,7 +14,7 @@ socketio.init_app(app, cors_allowed_origins="*")
 def start_game():
     global game_manager
     # Placeholder IDs and names for simplicity during dev
-    players = {"72779466":"Player 1", "327441455":"Player 2"}
+    players = {"72779466":"Best Player", "327441455":"Game Master"}
     #players = {"280609844":"Player 1"}
     game_manager = create_game(players)
     game_state = game_manager.get_game_state()

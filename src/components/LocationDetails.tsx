@@ -36,13 +36,6 @@ function LocationDetails({location, announceLocation, onSubmit, showSubmit}: Loc
             </div>
             <div>
                 <h3 id="location-context-header">The {location}</h3>
-
-                    <Button
-                        text={"Announce visit"} 
-                        btnClass={"btn bg-turquoise"}
-                        onClick={() => {announceLocation(location)}}/>
-
-                    <h4>Actions</h4>
                     {location == "market" ?
                         <MarketActionsForm
                             onSubmit={onSubmit}
@@ -59,6 +52,12 @@ function LocationDetails({location, announceLocation, onSubmit, showSubmit}: Loc
                         <LibraryActions
                             onSubmit={onSubmit}
                             showSubmit={showSubmit}/> : ""}
+
+                    <Button
+                        text={"Announce visit"} 
+                        btnClass={"btn bg-turquoise"}
+                        onClick={() => {announceLocation(location)}}/>
+
                 </div>
         </div>
     );

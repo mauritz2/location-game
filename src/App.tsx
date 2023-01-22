@@ -1,5 +1,4 @@
 import React from "react";
-
 import GameLog from "./components/GameLog";
 import LocationSelect from "./components/LocationSelect";
 import LocationDetails from "./components/LocationDetails";
@@ -8,19 +7,17 @@ import { useRealTime } from "./context/real-time-context";
 import CharacterDetails from "./components/CharacterDetails";
 import PlayerOrderStatus from "./components/PlayerOrderStatus";
 
-
 // Project TODO
-// Enable gamelog messages for specific people
-// Build report player functionality
-// Build in trading
 // Create all classes
-// Replace market with mage tower
+// Implement Objective Complete check on resource gain --> + Visual indicator
+// Implement guessing at end --> Correct guesser wins?
+// Implement something to make it tougher to guess... 
+
+// Make sure you can't confirm action without selecting an action
+// Make sure you can't trade without an action
 // Make resource names more flexible - i.e. config once ideally
 // TODO - make consistent camelCase
-// TODO - fix bug where players get the wrong location messages (seems related to game setup)
-// TODO - fix UI so that resources and actions are visible at the same time
 // TODO - should there be a location to "switch" your character? Or when you are reported - should you get a new char?
-
 
 function App() {
   const realTime = useRealTime();

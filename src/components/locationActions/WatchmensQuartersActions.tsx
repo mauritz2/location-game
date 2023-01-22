@@ -25,11 +25,11 @@ function WatchmensQuartersActions({onSubmit, showSubmit}: LocationActionsFormPro
         <form onSubmit={(e) => {handleSubmit(e); e.preventDefault();}}>
             <div>
                 <input type="radio" id="market" name="action" value="market" onChange={event => setSelectedAction(event.target.value)}/>
-                <label htmlFor="market"><strong>Smith: </strong>Get 1 Armor</label>
+                <label htmlFor="market"><strong> Smith: </strong>Obtain 1 Armor</label>
             </div>
             <div>
                 <input type="radio" id="blockLocation" name="action" value="blockLocation" onChange={event => setSelectedAction(event.target.value)} />
-                <label htmlFor="blockLocation"><strong>Report: </strong>Pay 2 gold to secretly name a location - 
+                <label htmlFor="blockLocation"><strong> Report: </strong>Pay 2 gold to secretly name a location - 
                 all players at that location this round will lose their turn without performing any location action. 
                 You also get half their gold (rounded down).</label>
             </div>
@@ -55,9 +55,8 @@ function WatchmensQuartersActions({onSubmit, showSubmit}: LocationActionsFormPro
                     </>
                 : ""}
             </div>
-            <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm action"/>
+            <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm visit"/>
         </form>
-        <p>Location bonus (if 2+ visits): <i>Each player obtains a resource of their choice, but they have to announce which one.</i></p>
         </>
     );
 }

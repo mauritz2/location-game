@@ -19,16 +19,15 @@ function GraveyardActions({onSubmit, showSubmit}: LocationActionsFormProps){
         <form onSubmit={(e) => {handleSubmit(e); e.preventDefault();}}>
             <div>
                 <input type="radio" id="getBones" name="action" value="getBones" onChange={event => setSelectedAction(event.target.value)}/>
-                <label htmlFor="getBones">Get 1 Bone <span className="icon armor" /></label>
+                <label htmlFor="getBones"><strong> Dig: </strong>Obtain 1 Bone</label>
             </div>
             <div>
                 <input type="radio" id="getHerbs" name="action" value="getHerbs" onChange={event => setSelectedAction(event.target.value)} />
-                <label htmlFor="getHerbs">Get 1 Herb</label>
+                <label htmlFor="getHerbs"><strong> Forage: </strong>Obtain 1 Herb</label>
             </div>
 
-            <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm action"/>
+            <input type="submit" className="btn bg-orange" disabled={showSubmit ? false : true} value="Confirm visit"/>
         </form>
-        <p>Location bonus (if 2+ visits): <i>Obtain both one bone AND one herb (the one you didn’t select)</i></p>
         </>
     );
 }
