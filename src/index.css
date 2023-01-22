@@ -203,6 +203,9 @@ form div {
   transition: 0.4s;
 }
 
+.tall-col {
+  grid-row: span 2;
+}
 
 /* Resources */
 #resource-grid {
@@ -280,7 +283,7 @@ form div {
 }
 
 .radio-button input[type="radio"]:checked + label {
-  background: var(--orange);
+  background: var(--turquoise);
   border-radius: 4px;
 }
 

@@ -33,7 +33,7 @@ function CharacterDetails({character, objective, objectiveText, objectiveBonus}:
     const bonuses = objectiveBonus.split("&&")
 
     return(
-        <div>
+        <div className="tall-col">
             <div id="character-details-container">
                 <img id="character-portrait" src={image}></img>
                 <input id="char-details-toggle-btn" type="button" value="?" onClick={() => toggleShowDetails()} />

@@ -3,22 +3,21 @@ import {CurrentPlayerType} from "../types";
 
 function PlayerOrderStatus({playerNames, currentPlayer}: PlayerOrderStatusType) {
     
-    let chevrons = []
+    let player_chevrons = []
     for(let i=0; i<playerNames.length; i++){
         let playerName = playerNames[i];
         if( playerName == currentPlayer.player_name){
-            chevrons.push(<div className="chevron active">{playerName}</div>)
+            player_chevrons.push(<div className="chevron active">{playerName}</div>)
         }
         else{
-            chevrons.push(<div className="chevron">{playerName}</div>)
+            player_chevrons.push(<div className="chevron">{playerName}</div>)
         }
     }
     
     return(
-        <>
-        {chevrons}
-        </>
-        
+        <div>
+        {player_chevrons}
+        </div>        
     );
 }
 

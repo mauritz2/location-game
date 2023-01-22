@@ -11,15 +11,8 @@ import Library from "../static/library.png";
 
 
 function LocationDetails({location, announceLocation, onSubmit, showSubmit}: LocationDetailsProps) {
-    // TODO - consider re-naming components - e.g. to columns, locationCol.
-    // TODO - displaySubmit is not being used - refactor
-    const [displaySubmit, setDisplaySubmit] = useState<boolean>(false);
-    const btn_msg = "Announce that you will visit the " + location
 
     let img = "";
-
-    console.log(location);
-
     switch(location){
         case "market":
             img = Market;
@@ -45,7 +38,7 @@ function LocationDetails({location, announceLocation, onSubmit, showSubmit}: Loc
                 <h3 id="location-context-header">The {location}</h3>
 
                     <Button
-                        text={btn_msg} 
+                        text={"Announce visit"} 
                         btnClass={"btn bg-turquoise"}
                         onClick={() => {announceLocation(location)}}/>
 
