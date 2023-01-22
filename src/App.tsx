@@ -2,10 +2,12 @@ import React from "react";
 
 import GameLog from "./components/GameLog";
 import Location from "./components/Location";
+import LocationSelect from "./components/LocationSelect";
 import LocationDetails from "./components/LocationDetails";
 import Resources from "./components/Resources";
 import { useRealTime } from "./context/real-time-context";
 import CharacterDetails from "./components/CharacterDetails";
+
 
 // Project TODO
 // Enable gamelog messages for specific people
@@ -48,20 +50,15 @@ function App() {
       </div>
       <div id="gameplay-grid">
         <GameLog logMessages={realTime.logMessages} />
-        <div id="location-container">
-          <Location name={"market"} onSelect={onLocationSelect} />
-          <Location name={"library"} onSelect={onLocationSelect} />
-          <Location name={"watchmens-quarters"} onSelect={onLocationSelect} />
-          <Location name={"graveyard"} onSelect={onLocationSelect} />
-        </div>
-        <div id="location-context-container">
-          <LocationDetails
-            location={locationFocus}
-            announceLocation={realTime.announceLocation}
-            onSubmit={realTime.onActionSubmit}
-            showSubmit={realTime.showSubmit}
-          />
-        </div>
+      <div id="location-container">
+        <LocationSelect onSelect={onLocationSelect} />
+        <LocationDetails
+          location={locationFocus}
+          announceLocation={realTime.announceLocation}
+          onSubmit={realTime.onActionSubmit}
+          showSubmit={realTime.showSubmit}
+        />
+      </div>
       </div>
     </div>
   );

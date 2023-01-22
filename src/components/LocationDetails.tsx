@@ -24,7 +24,7 @@ function LocationDetails({location, announceLocation, onSubmit, showSubmit}: Loc
                 <MarketActionsForm
                     onSubmit={onSubmit}
                     showSubmit={showSubmit}/> : ""}
-            {location == "watchmens-quarters" ?
+            {location == "watchmensquarters" ?
                 <WatchmensQuartersActions
                     onSubmit={onSubmit}
                     showSubmit={showSubmit}/> : ""}
